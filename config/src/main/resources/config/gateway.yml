@@ -1,0 +1,64 @@
+server:
+  port: 5555
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+            allowedHeaders: "*"
+      routes:
+        - id: core
+#          uri: http://localhost:8189
+          uri: lb://CORE
+          predicates:
+            - Path=/core/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/core
+            - JwtAuthFilter
+        - id: cart
+#          uri: http://localhost:8190
+          uri: lb://CART
+          predicates:
+            - Path=/cart/**
+#            - Header=Authorization, Bearer (.*)
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/cart
+            - JwtAuthFilter
+        - id: security
+#          uri: http://localhost:8188
+          uri: lb://SECURITY
+          predicates:
+            - Path=/security/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/security
+            - JwtAuthFilter
+
+jwt:
+  secret: secretKey
+
+#logging:
+#  level:
+#    reactor:
+#      netty: TRACE
+#    org:
+#      springframework:
+#        cloud:
+#          gateway: TRACE
