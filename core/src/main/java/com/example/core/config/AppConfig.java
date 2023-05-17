@@ -1,6 +1,7 @@
 package com.example.core.config;
 
 import com.example.core.property.CartServiceIntegrationProperties;
+import com.example.core.property.PictureServiceIntegrationProperties;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -17,11 +18,17 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableConfigurationProperties(
-        CartServiceIntegrationProperties.class
+        {
+                CartServiceIntegrationProperties.class,
+                PictureServiceIntegrationProperties.class
+        }
 )
 @RequiredArgsConstructor
 public class AppConfig {
+
     private final CartServiceIntegrationProperties cartServiceIntegrationProperties;
+    private final PictureServiceIntegrationProperties pictureServiceIntegrationProperties;
+
 
     @Bean
     public WebClient cartServiceWebClient() {
@@ -39,4 +46,22 @@ public class AppConfig {
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }
+
+    @Bean
+    public WebClient pictureServiceWebClient() {
+        TcpClient tcpClient = TcpClient
+                .create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, pictureServiceIntegrationProperties.getConnectTimeout())
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(pictureServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(pictureServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
+                });
+
+        return WebClient
+                .builder()
+                .baseUrl(pictureServiceIntegrationProperties.getUrl())
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .build();
+    }
+
 }

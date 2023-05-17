@@ -21,3 +21,5 @@ insert into products (title, price, category_id) values
                                                      ('Jameson', 750.00, 3),
                                                      ('Bushmills', 650.00, 3),
                                                      ('Ballantine’s', 600.00, 3);
+
+INSERT INTO pictures (name, content_type, storage_file_name, product_id) VALUES ('Picture 1', 'image/jpeg', '2a35319c-bc9e-454f-9b29-e2beccf608e0', 1);

@@ -1,0 +1,18 @@
+<div>
+  <h3>Добавить новый продукт</h3>
+  <form>
+    <div class="form-group">
+      <label for="productTitleInput">Название продукта:</label>
+      <input type="text" class="form-control" id="productTitleInput" ng-model="newProduct.title" required>
+    </div>
+    <div class="form-group">
+      <label for="productPriceInput">Цена продукта:</label>
+      <input type="number" class="form-control" id="productPriceInput" ng-model="newProduct.price" required>
+    </div>
+    <div class="form-group">
+      <label for="productImageInput">Изображение продукта:</label>
+      <input type="file" id="productImageInput" accept="image/jpeg" ng-model="newProduct.image" required>
+    </div>
+    <button type="submit" class="btn btn-success" ng-click="saveNewProduct()">Сохранить</button>
+  </form>
+</div>

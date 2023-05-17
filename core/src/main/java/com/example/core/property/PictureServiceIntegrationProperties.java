@@ -5,12 +5,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
-@ConfigurationProperties(prefix = "integrations.cart-service")
+@ConfigurationProperties(prefix = "integrations.storage-app")
 @Data
-public class CartServiceIntegrationProperties {
+public class PictureServiceIntegrationProperties {
     private String url;
     private Integer connectTimeout;
     private Integer readTimeout;
     private Integer writeTimeout;
-    private String storage;
 }

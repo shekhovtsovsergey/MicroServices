@@ -24,3 +24,18 @@ integrations:
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
+  storage-app:
+    url: http://localhost:5555/store/
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          reactive:
+            function:
+              client:
+                ExchangeFunctions: DEBUG

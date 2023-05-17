@@ -50,6 +50,16 @@ spring:
             - StripPrefix=1
             - PrefixPath=/security
             - JwtAuthFilter
+        - id: store
+          #          uri: http://localhost:8191
+          uri: lb://STORAGE-APP
+          predicates:
+            - Path=/store/**
+          #            - Header=Authorization, Bearer (.*)
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/store
+            - JwtAuthFilter
 
 jwt:
   secret: secretKey

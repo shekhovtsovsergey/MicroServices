@@ -22,6 +22,10 @@
                 templateUrl: 'orders/orders.html',
                 controller: 'ordersController'
             })
+            .when('/upload', {
+                templateUrl: 'upload/upload.html',
+                controller: 'uploadController'
+            })
             .when('/registration', {
                 templateUrl: 'registration/registration.html',
                 controller: 'registrationController'
