@@ -37,7 +37,6 @@ CREATE TABLE order_items (
 
 CREATE TABLE pictures (
                           id BIGSERIAL PRIMARY KEY,
-                          name VARCHAR(1024) NOT NULL,
                           content_type VARCHAR(255) NOT NULL,
                           storage_file_name VARCHAR(256) NOT NULL UNIQUE,
                           product_id BIGINT NOT NULL,

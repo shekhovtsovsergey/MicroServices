@@ -63,7 +63,7 @@
 
 angular.module('market').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:5555/auth/auth', $scope.user)
+        $http.post('http://localhost:5555/security/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;

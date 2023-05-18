@@ -2,6 +2,8 @@ package com.example.storageapp.service;
 
 
 import com.example.storageapp.dto.PictureDto;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Optional;
 
 public interface PictureService {
@@ -9,5 +11,5 @@ public interface PictureService {
 
     Optional<PictureDto> getPictureDataById(String id);
 
-    String createPicture(byte[] pictureData);
+    String createPicture(MultipartFile image);
 }

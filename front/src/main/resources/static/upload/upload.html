@@ -1,6 +1,6 @@
 <div>
   <h3>Добавить новый продукт</h3>
-  <form>
+  <form ng-submit="saveNewProduct()">
     <div class="form-group">
       <label for="productTitleInput">Название продукта:</label>
       <input type="text" class="form-control" id="productTitleInput" ng-model="newProduct.title" required>
@@ -13,6 +13,23 @@
       <label for="productImageInput">Изображение продукта:</label>
       <input type="file" id="productImageInput" accept="image/jpeg" ng-model="newProduct.image" required>
     </div>
-    <button type="submit" class="btn btn-success" ng-click="saveNewProduct()">Сохранить</button>
+    <button type="submit" class="btn btn-success">Сохранить</button>
   </form>
 </div>
+
+
+<!--
+
+<form>
+  <div>
+    <input type="text" id="productTitleInput" name="title"><br><br>
+  </div>
+  <div>
+    <textarea id="productPriceInput" name="price" cols="40" rows="3" placeholder="Напишите описание организации..."></textarea><br><br>
+  </div>
+  <div>
+    <input type="file" id="productImageInput" name="image"><br><br>
+  </div>
+  <button type="button" class="btn btn-primary" ng-click="saveNewProduct()">Создать</button>
+</form>
+</div>-->

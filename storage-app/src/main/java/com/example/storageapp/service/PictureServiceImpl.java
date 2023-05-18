@@ -4,6 +4,8 @@ import com.example.storageapp.dto.PictureDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,10 +41,10 @@ public class PictureServiceImpl implements PictureService {
 
 
     @Override
-    public String createPicture(byte[] pictureData) {
+    public String createPicture(MultipartFile image) {
         String filename = UUID.randomUUID().toString();
         try (OutputStream os = Files.newOutputStream(Paths.get(".", "storage", filename))) {
-            os.write(pictureData);
+            os.write(image.getBytes());
         } catch (IOException ex) {
             log.error("Can't write to file", ex);
             throw new RuntimeException(ex);

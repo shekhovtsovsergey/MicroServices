@@ -4,16 +4,14 @@ import com.example.core.dao.PictureDao;
 import com.example.core.dto.PictureDto;
 import com.example.core.integration.PictureServiceIntagration;
 import com.example.core.model.Picture;
+import com.example.core.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +33,7 @@ public class PictureServiceImpl implements PictureService {
 
 
 
-
-
+/*
     @Override
     public String createPicture(byte[] pictureData) {
         String filename = UUID.randomUUID().toString();
@@ -47,5 +44,20 @@ public class PictureServiceImpl implements PictureService {
             throw new RuntimeException(ex);
         }
         return filename;
+    }*/
+
+
+    @Override
+    public Picture createPicture(MultipartFile image, Product product) {
+        String storageFileName = pictureServiceIntagration.createPicture(image);
+        Picture picture = new Picture("image/jpeg", storageFileName, product);
+        product.getPictures().add(picture);
+        picture.setProduct(product);
+        pictureDao.save(picture);
+        return picture;
     }
+
+
+
+
 }

@@ -1,5 +1,5 @@
 angular.module('market').controller('registrationController', function ($scope, $http, $location, $localStorage) {
-    const contextPath = 'http://localhost:5555/auth/';
+    const contextPath = 'http://localhost:5555/security/';
 
     $scope.functionRegistration = function () {
         $http.post(contextPath + 'registration', $scope.reguser).then(function (response) {

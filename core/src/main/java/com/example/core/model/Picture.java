@@ -1,12 +1,12 @@
 package com.example.core.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "pictures")
 public class Picture {
@@ -14,9 +14,6 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name", length = 1024, nullable = false)
-    private String name;
 
     @Column(name = "content_type", nullable = false)
     private String contentType;
@@ -27,4 +24,10 @@ public class Picture {
     @ManyToOne(optional = false)
     private Product product;
 
+
+    public Picture(String contentType, String storageFileName, Product product) {
+        this.contentType = contentType;
+        this.storageFileName = storageFileName;
+        this.product = product;
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.core.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "products")
 @NoArgsConstructor
 public class Product {
@@ -44,4 +44,9 @@ public class Product {
             cascade = CascadeType.ALL)
     private List<Picture> pictures = new ArrayList<>();
 
+    public Product(String title, BigDecimal price, Category category) {
+        this.title = title;
+        this.price = price;
+        this.category = category;
+    }
 }

@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -21,6 +23,8 @@ public class ProductService {
     private final ProductDao productRepository;
     private final CategoryService categoryService;
     private final ProductValidator productValidator;
+    private final PictureService pictureService;
+
 
     public Page<Product> findAll(Specification<Product> spec, int page) {
         return productRepository.findAll(spec, PageRequest.of(page, 5));
@@ -34,16 +38,15 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Product createNewProduct(ProductDto productDto) {
-        productValidator.validate(productDto);
-        Product product = new Product();
-        product.setPrice(productDto.getPrice());
-        product.setTitle(productDto.getTitle());
-        Category category = categoryService.findByTitle(productDto.getCategoryTitle()).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-        product.setCategory(category);
+
+    public Product createNewProduct(String title, BigDecimal price, String type, MultipartFile image) {
+        Category category = categoryService.findByTitle(type).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Product product = new Product(title,price,category);
         productRepository.save(product);
+        pictureService.createPicture(image,product);
         return product;
     }
+
 
     public Specification<Product> createSpecByFilters(Integer minPrice, Integer maxPrice, String title) {
         Specification<Product> spec = Specification.where(null);

@@ -10,9 +10,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
-    private final CategoryDao categoryRepository;
+    private final CategoryDao categoryDao;
 
     public Optional<Category> findByTitle(String title) {
-        return categoryRepository.findByTitle(title);
+        return categoryDao.findByTitle(title);
     }
+
+    public Optional<Category> findById(int id) {
+        return categoryDao.findById(id);
+    }
+
 }

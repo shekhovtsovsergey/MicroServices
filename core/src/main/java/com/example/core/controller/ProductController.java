@@ -18,6 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -78,7 +82,7 @@ public class ProductController {
         return productConverter.entityToDto(p);
     }
 
-    @Operation(
+/*    @Operation(
             summary = "Запрос на создание нового продукта",
             responses = {
                     @ApiResponse(
@@ -95,10 +99,31 @@ public class ProductController {
     ) {
         Product p = productService.createNewProduct(productDto);
         return productConverter.entityToDto(p);
-    }
+    }*/
+
 
     @DeleteMapping("/{id}")
     public void deleteProductById(@PathVariable Long id) {
         productService.deleteById(id);
     }
+
+
+/*
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNewProduct(@RequestParam("image") MultipartFile image, @ModelAttribute ProductDto productDto) {
+        System.out.println("Дошло");
+        Product product = productService.createNewProduct(productDto, image);
+    }*/
+
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNewProduct(@RequestParam("title") String title,
+                                 @RequestParam("price") BigDecimal price,
+                                 @RequestParam("category") String category,
+                                 @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        productService.createNewProduct(title,price,category,image);
+    }
+
 }
