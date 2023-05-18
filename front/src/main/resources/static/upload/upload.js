@@ -6,16 +6,19 @@ angular.module('market', []).controller('uploadController', function ($scope, $h
 
     // Функция для отправки POST запроса на сохранение нового продукта
     $scope.saveNewProduct = function() {
-        const productData = {
+        const productDto = {
+            id: null,
             title: $scope.newProduct.title,
+            description: $scope.newProduct.description,
             price: $scope.newProduct.price,
-            category: 1
+            category: {id: 1},
+            imageUrl: $scope.newProduct.imageUrl
         };
 
         $http({
             url: contextPath + 'api/v1/products',
             method: 'POST',
-            data: productData
+            data: productDto
         }).then(function (response) {
             // Загружаем обновленную таблицу товаров после сохранения
             $scope.loadProducts();
