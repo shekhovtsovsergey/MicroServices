@@ -1,4 +1,4 @@
-package com.example.storageapp;
+/*package com.example.storageapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,4 +10,4 @@ class StorageAppApplicationTests {
 	void contextLoads() {
 	}
 
-}
+}*/

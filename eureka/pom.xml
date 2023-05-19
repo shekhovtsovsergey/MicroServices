@@ -21,7 +21,9 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+			<version>3.1.1</version>
 		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -42,9 +44,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.example.eureka.EurekaApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
 	<repositories>
 		<repository>
 			<id>netflix-candidates</id>

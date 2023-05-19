@@ -1,0 +1,59 @@
+version: '3'
+services:
+  config:
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+  eureka:
+    build:
+      context: ./eureka
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+  core:
+    build:
+      context: ./core
+      dockerfile: Dockerfile
+    ports:
+      - "8189:8189"
+    depends_on:
+      - config
+      - eureka
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "5555:5555"
+    depends_on:
+      - config
+      - eureka
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - config
+      - eureka
+  security:
+    build:
+      context: ./security
+      dockerfile: Dockerfile
+    ports:
+      - "8188:8188"
+    depends_on:
+      - config
+      - eureka
+  storage-app:
+    build:
+      context: ./storage-app
+      dockerfile: Dockerfile
+    ports:
+      - "8191:8191"
+    depends_on:
+      - config
+      - eureka

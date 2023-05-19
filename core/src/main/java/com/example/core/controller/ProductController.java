@@ -63,6 +63,9 @@ public class ProductController {
         return out;
     }
 
+
+
+
     @Operation(
             summary = "Запрос на получение продукта по id",
             responses = {
