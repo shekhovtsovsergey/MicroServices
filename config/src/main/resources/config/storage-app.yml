@@ -4,3 +4,9 @@ server:
     context-path: /store
 integrations:
     storage: /storage
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka:8761/eureka

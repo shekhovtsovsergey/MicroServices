@@ -10,3 +10,9 @@ integrations:
     write-timeout: 5000
 cart-service:
   cart-prefix: winter_cart_
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka:8761/eureka

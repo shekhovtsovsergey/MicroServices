@@ -11,9 +11,8 @@ services:
     restart: always
     networks:
       - some-net
-    network_mode: "host"
 
-  app1:
+  eureka:
     build:
       context: ./eureka
       dockerfile: Dockerfile
@@ -22,7 +21,6 @@ services:
     restart: always
     networks:
       - some-net
-    network_mode: "host"
 
   app2:
     build:
@@ -36,8 +34,7 @@ services:
       - some-net
     depends_on:
       - config
-      - app1
-    network_mode: "host"
+      - eureka
 
   app3:
     build:
@@ -50,6 +47,7 @@ services:
       - some-net
     depends_on:
       - config
+      - eureka
 
   app4:
     build:
@@ -62,7 +60,7 @@ services:
       - some-net
     depends_on:
       - config
-      - app1
+      - eureka
 
   app5:
     build:
@@ -75,7 +73,7 @@ services:
       - some-net
     depends_on:
       - config
-      - app1
+      - eureka
 
   app6:
     build:
@@ -88,7 +86,7 @@ services:
       - some-net
     depends_on:
       - config
-      - app1
+      - eureka
 
 networks:
   some-net:
