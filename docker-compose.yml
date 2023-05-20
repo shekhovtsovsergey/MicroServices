@@ -1,59 +1,94 @@
 version: '3'
 services:
+
   config:
     build:
       context: ./config
       dockerfile: Dockerfile
+    domainname: config
     ports:
       - "8888:8888"
-  eureka:
+    restart: always
+    networks:
+      - some-net
+    network_mode: "host"
+
+  app1:
     build:
       context: ./eureka
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
-  core:
+    restart: always
+    networks:
+      - some-net
+    network_mode: "host"
+
+  app2:
     build:
       context: ./core
       dockerfile: Dockerfile
+    domainname: core
     ports:
       - "8189:8189"
+    restart: always
+    networks:
+      - some-net
     depends_on:
       - config
-      - eureka
-  gateway:
+      - app1
+    network_mode: "host"
+
+  app3:
     build:
       context: ./gateway
       dockerfile: Dockerfile
     ports:
       - "5555:5555"
+    restart: always
+    networks:
+      - some-net
     depends_on:
       - config
-      - eureka
-  front:
+
+  app4:
     build:
       context: ./front
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    restart: always
+    networks:
+      - some-net
     depends_on:
       - config
-      - eureka
-  security:
+      - app1
+
+  app5:
     build:
       context: ./security
       dockerfile: Dockerfile
     ports:
       - "8188:8188"
+    restart: always
+    networks:
+      - some-net
     depends_on:
       - config
-      - eureka
-  storage-app:
+      - app1
+
+  app6:
     build:
       context: ./storage-app
       dockerfile: Dockerfile
     ports:
       - "8191:8191"
+    restart: always
+    networks:
+      - some-net
     depends_on:
       - config
-      - eureka
+      - app1
+
+networks:
+  some-net:
