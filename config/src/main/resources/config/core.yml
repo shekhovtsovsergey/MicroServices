@@ -31,7 +31,7 @@ integrations:
     read-timeout: 10000
     write-timeout: 5000
   storage-app:
-    url: http://storage-app:5555/store/
+    url: http://gateway:5555/store/
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000

@@ -22,7 +22,7 @@ services:
     networks:
       - some-net
 
-  app2:
+  core:
     build:
       context: ./core
       dockerfile: Dockerfile
@@ -36,7 +36,7 @@ services:
       - config
       - eureka
 
-  app3:
+  gateway:
     build:
       context: ./gateway
       dockerfile: Dockerfile
@@ -49,7 +49,7 @@ services:
       - config
       - eureka
 
-  app4:
+  front:
     build:
       context: ./front
       dockerfile: Dockerfile
@@ -62,7 +62,7 @@ services:
       - config
       - eureka
 
-  app5:
+  security:
     build:
       context: ./security
       dockerfile: Dockerfile
@@ -75,12 +75,14 @@ services:
       - config
       - eureka
 
-  app6:
+  storage-app:
     build:
       context: ./storage-app
       dockerfile: Dockerfile
     ports:
       - "8191:8191"
+    volumes:
+      - ./storage:/app/storage
     restart: always
     networks:
       - some-net

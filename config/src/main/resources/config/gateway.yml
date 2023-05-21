@@ -17,15 +17,15 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "http://localhost:3000"
+            allowedOrigins: "*"
             allowedMethods:
               - GET
               - POST
             allowedHeaders: "*"
       routes:
         - id: core
-#          uri: http://localhost:8189
-          uri: lb://CORE
+          uri: http://core:8189
+#          uri: lb://CORE
           predicates:
             - Path=/core/**
           filters:
@@ -33,8 +33,8 @@ spring:
             - PrefixPath=/core
             - JwtAuthFilter
         - id: cart
-#          uri: http://localhost:8190
-          uri: lb://CART
+          uri: http://cart:8190
+#          uri: lb://CART
           predicates:
             - Path=/cart/**
 #            - Header=Authorization, Bearer (.*)
@@ -43,8 +43,8 @@ spring:
             - PrefixPath=/cart
             - JwtAuthFilter
         - id: security
-#          uri: http://localhost:8188
-          uri: lb://SECURITY
+          uri: http://security:8188
+#          uri: lb://SECURITY
           predicates:
             - Path=/security/**
           filters:
@@ -52,8 +52,8 @@ spring:
             - PrefixPath=/security
             - JwtAuthFilter
         - id: store
-          #          uri: http://localhost:8191
-          uri: lb://STORAGE-APP
+          uri: http://storage-app:8191
+#          uri: lb://STORAGE-APP
           predicates:
             - Path=/store/**
           #            - Header=Authorization, Bearer (.*)
