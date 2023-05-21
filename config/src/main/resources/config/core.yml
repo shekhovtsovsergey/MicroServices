@@ -26,7 +26,7 @@ eureka:
         defaultZone: http://eureka:8761/eureka
 integrations:
   cart-service:
-    url: http://cart-service:8190/cart/
+    url: http://cart:8190/cart/
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000

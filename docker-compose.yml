@@ -89,6 +89,25 @@ services:
     depends_on:
       - config
       - eureka
+  cart:
+    build:
+      context: ./cart
+      dockerfile: Dockerfile
+    ports:
+      - "8190:8190"
+    restart: always
+    networks:
+      - some-net
+    depends_on:
+      - config
+      - eureka
+  redis-stack:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    networks:
+      - some-net
 
 networks:
   some-net:

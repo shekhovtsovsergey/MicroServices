@@ -16,7 +16,7 @@ public class CartService {
     private final ProductServiceIntegration productServiceIntegration;
     private final RedisTemplate<String, Object> redisTemplate;
 
-    @Value("${cart-service.cart-prefix}")
+    @Value("${cart.cart-prefix}")
     private String cartPrefix;
 
     public Cart getCurrentCart(String uuid) {
