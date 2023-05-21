@@ -25,8 +25,11 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public Optional<PictureDto> getPictureDataById(long id) {
-        Optional<Picture> picture = pictureDao.findById(id);
+        System.out.println("Picture service " + id);
+        Optional<Picture> picture = pictureDao.findPictureByProductId(id);
+        System.out.println("нашли в БД " + picture);
         PictureDto pictureDto = pictureServiceIntagration.getPicture(picture.get().getStorageFileName());
+        System.out.println("получили из интегации " + picture);
         pictureDto.setContentType(picture.get().getContentType());
         return Optional.ofNullable(pictureDto);
     }
