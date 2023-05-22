@@ -8,7 +8,9 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class StringResponse {
-    private String value;
+public class AppErrorDto {
+
+    private int statusCode;
+    private String message;
 
 }

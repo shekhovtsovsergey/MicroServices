@@ -2,8 +2,13 @@ package com.example.storageapp.controller;
 
 
 import com.example.storageapp.dto.PictureDto;
+import com.example.storageapp.exception.PictureCreationException;
+import com.example.storageapp.exception.PictureNotFoundException;
 import com.example.storageapp.service.PictureService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,32 +16,29 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PictureController {
 
     private final PictureService pictureService;
 
-
-//    @GetMapping("api/v1/picture/{pictureId}")
-//    public Optional<PictureDto> downloadPicture(@PathVariable("pictureId") String pictureId) {
-//        return pictureService.getPictureDataById(pictureId);
-//    }
-
-
     @GetMapping("api/v1/picture/{pictureId}")
-    public Optional<PictureDto> downloadPicture(@PathVariable("pictureId") String pictureId) {
-        Optional<PictureDto> pictureDtoOptional = pictureService.getPictureDataById(pictureId);
-        if (!pictureDtoOptional.isPresent()) {
-            System.out.println("Picture with ID " + pictureId + " not found");
-        } else if (pictureDtoOptional.get() == null) {
-            System.out.println("Picture with ID " + pictureId + " has null data");
-        } else {
-            System.out.println("Picture with ID " + pictureId + " successfully retrieved");
-        }
-        return pictureDtoOptional;
+    public Optional<PictureDto> downloadPicture(@PathVariable("pictureId") String pictureId) throws PictureNotFoundException {
+        return pictureService.getPictureDataById(pictureId);
     }
 
     @PostMapping("api/v1/picture/")
-    public String createPicture(@RequestParam(value = "image") MultipartFile image) {
+    public String createPicture(@RequestParam(value = "image") MultipartFile image) throws PictureCreationException {
         return pictureService.createPicture(image);
+    }
+
+    @ExceptionHandler({PictureNotFoundException.class,PictureCreationException.class})
+    private ResponseEntity<?> handleException(Exception e) {
+        log.error("Error from storage:", e);
+        if (e instanceof PictureNotFoundException) {
+            return ResponseEntity.notFound().build();
+        } else if (e instanceof PictureCreationException) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -12,3 +12,5 @@ eureka:
       defaultZone: http://eureka:8761/eureka
 APP_RESOURCES_PATH: /app/resources
 APP_STORAGE_PATH: app/storage
+storage:
+  path: app/storage

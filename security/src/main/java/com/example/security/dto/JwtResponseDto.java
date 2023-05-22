@@ -1,4 +1,4 @@
-package com.example.cart.dto;
+package com.example.security.dto;
 
 import lombok.*;
 
@@ -8,7 +8,6 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class StringResponse {
-    private String value;
-
+public class JwtResponseDto {
+    private String token;
 }

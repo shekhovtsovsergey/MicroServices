@@ -16,6 +16,4 @@ public class PictureDto {
     private Path path;
     private byte[] data;
 
-    public PictureDto(String contentType, Path toPath) {
-    }
 }

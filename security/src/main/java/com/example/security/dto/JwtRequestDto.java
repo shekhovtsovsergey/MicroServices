@@ -1,6 +1,5 @@
 package com.example.security.dto;
 
-
 import lombok.*;
 
 @Getter
@@ -9,9 +8,7 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class RegistrationUserDto {
+public class JwtRequestDto {
     private String username;
     private String password;
-    private String confirmPassword;
-    private String email;
 }
