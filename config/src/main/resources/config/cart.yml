@@ -16,7 +16,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka:8761/eureka
-spring:
-  redis-stack:
-    host: redis-stack
-    port: 6379

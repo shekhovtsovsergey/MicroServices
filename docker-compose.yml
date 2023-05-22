@@ -101,11 +101,12 @@ services:
     depends_on:
       - config
       - eureka
-  redis-stack:
-    image: redis/redis-stack:latest
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
-      - "8001:8001"
     networks:
       - some-net
 
