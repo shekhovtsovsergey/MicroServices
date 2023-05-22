@@ -23,6 +23,7 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder(@RequestHeader String username /*, @RequestBody OrderData orderData */) {
+        System.out.println("createOrder в контроллере" + username);
         orderService.createOrder(username);
     }
 

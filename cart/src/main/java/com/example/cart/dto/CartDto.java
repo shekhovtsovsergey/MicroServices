@@ -11,6 +11,7 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class CartDto {
 
     private List<CartItemDto> items;

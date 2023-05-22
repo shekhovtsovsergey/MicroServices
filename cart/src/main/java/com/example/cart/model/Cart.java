@@ -3,12 +3,14 @@ package com.example.cart.model;
 
 import com.example.cart.dto.ProductDto;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 public class Cart {
     private List<CartItem> items;
     private BigDecimal totalPrice;

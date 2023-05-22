@@ -1,8 +1,11 @@
 package com.example.core.dto;
 
+import lombok.ToString;
+
 import java.math.BigDecimal;
 import java.util.List;
 
+@ToString
 public class CartDto {
     private List<CartItemDto> items;
     private BigDecimal totalPrice;

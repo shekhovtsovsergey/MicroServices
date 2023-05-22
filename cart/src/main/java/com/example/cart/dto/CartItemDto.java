@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class CartItemDto {
 
     private Long productId;

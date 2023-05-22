@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -23,9 +22,9 @@ public class CartServiceImpl implements CartService{
     private String cartPrefix;
 
     @Override
-    public void add(String uuid, String username,Long productId) {
+    public void add(String uuid, String username, Long productId) {
         ProductDto productDto = productServiceIntegration.getProductById(productId);
-        String targetUuid = getCartUuid(username,uuid);
+        String targetUuid = getCartUuid(username, uuid);
         execute(targetUuid, cart -> cart.add(productDto));
     }
 
@@ -35,31 +34,36 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public Cart getCurrentCart(String uuid,String username) {
-        String targetUuid = cartPrefix + uuid;
-        targetUuid = getCartUuid(username,uuid);
+    public Cart getCurrentCart(String uuid, String username) {
+        String targetUuid = getCartUuid(username, uuid);
+        System.out.println("логируем 1 "+ targetUuid);
+        targetUuid = cartPrefix + targetUuid;
+        System.out.println("логируем 2 "+ targetUuid);
         if (!redisTemplate.hasKey(targetUuid)) {
             redisTemplate.opsForValue().set(targetUuid, new Cart());
+            System.out.println("логируем 3 "+ targetUuid);
         }
-        return (Cart)redisTemplate.opsForValue().get(targetUuid);
+        Cart cart = (Cart)redisTemplate.opsForValue().get(targetUuid);
+        System.out.println("логируем 4 "+ targetUuid);
+        System.out.println("логируем 5 " + cart);
+        return cart;
     }
 
     @Override
-    public void remove(String uuid,String username, Long productId) {
-        String targetUuid = getCartUuid(username,uuid);
+    public void remove(String uuid, String username, Long productId) {
+        String targetUuid = getCartUuid(username, uuid);
         execute(targetUuid, cart -> cart.remove(productId));
     }
 
     @Override
-    public void clear(String uuid,String username) {
-        String targetUuid = getCartUuid(username,uuid);
-        execute(targetUuid,username, Cart::clear);
+    public void clear(String uuid, String username) {
+        String targetUuid = getCartUuid(username, uuid);
+        execute(targetUuid, Cart::clear);
     }
 
-
     @Override
-    public void execute(String uuid, String username, Consumer<Cart> operation) {
-        Cart cart = getCurrentCart(uuid,username);
+    public void execute(String uuid, Consumer<Cart> operation) {
+        Cart cart = getCurrentCart(uuid, null);
         operation.accept(cart);
         redisTemplate.opsForValue().set(cartPrefix + uuid, cart);
     }

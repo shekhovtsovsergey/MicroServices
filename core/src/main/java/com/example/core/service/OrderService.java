@@ -22,6 +22,7 @@ public class OrderService {
     @Transactional
     public Order createOrder(String username) {
         CartDto cartDto = cartServiceIntegration.getCurrentCart(username);
+        System.out.println("Ордер сервис создание ордера в core"+cartDto);
         Order order = new Order();
         order.setUsername(username);
         order.setTotalPrice(cartDto.getTotalPrice());
