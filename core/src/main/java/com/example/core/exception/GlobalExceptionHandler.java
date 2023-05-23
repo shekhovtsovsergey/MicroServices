@@ -1,7 +1,6 @@
 package com.example.core.exception;
 
 import com.example.core.dto.AppError;
-import com.example.core.dto.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +20,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ValidationError> catchResourceNotFoundException(ValidationException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new ValidationError(e.getFields(), e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    public static class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
     }
 }

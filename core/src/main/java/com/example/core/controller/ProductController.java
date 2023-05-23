@@ -4,7 +4,7 @@ import com.example.core.converter.ProductConverter;
 import com.example.core.dto.AppError;
 import com.example.core.dto.PageDto;
 import com.example.core.dto.ProductDto;
-import com.example.core.dto.ResourceNotFoundException;
+import com.example.core.exception.GlobalExceptionHandler;
 import com.example.core.model.Product;
 import com.example.core.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,7 +78,7 @@ public class ProductController {
     )
     @GetMapping("/api/v1/products/{id}")
     public ProductDto findProductById(@PathVariable @Parameter(description = "Идентификатор продукта", required = true) Long id) {
-        Product p = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Продукт не найден, id: " + id));
+        Product p = productService.findById(id).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Продукт не найден, id: " + id));
         return productConverter.entityToDto(p);
     }
 

@@ -1,7 +1,7 @@
 package com.example.core.converter;
 
 import com.example.core.dto.ProductDto;
-import com.example.core.dto.ResourceNotFoundException;
+import com.example.core.exception.GlobalExceptionHandler;
 import com.example.core.model.Category;
 import com.example.core.model.Product;
 import com.example.core.service.CategoryService;
@@ -22,7 +22,7 @@ public class ProductConverter {
         p.setId(productDto.getId());
         p.setTitle(productDto.getTitle());
         p.setPrice(productDto.getPrice());
-        Category c = categoryService.findByTitle(productDto.getCategoryTitle()).orElseThrow(() -> new ResourceNotFoundException("Категория не найдена"));
+        Category c = categoryService.findByTitle(productDto.getCategoryTitle()).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Категория не найдена"));
         p.setCategory(c);
         return p;
     }
