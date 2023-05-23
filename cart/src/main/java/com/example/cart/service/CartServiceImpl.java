@@ -22,7 +22,7 @@ public class CartServiceImpl implements CartService{
     private String cartPrefix;
 
     @Override
-    public void add(String uuid, String username, Long productId) {
+    public void add(String username, String uuid, Long productId) {
         ProductDto productDto = productServiceIntegration.getProductById(productId);
         String targetUuid = getCartUuid(username, uuid);
         execute(targetUuid, cart -> cart.add(productDto));
@@ -34,10 +34,10 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public Cart getCurrentCart(String uuid, String username) {
-        String targetUuid = getCartUuid(username, uuid);
-        System.out.println("логируем 1 "+ targetUuid);
-        targetUuid = cartPrefix + targetUuid;
+    public Cart getCurrentCart(String username, String uuid) {
+        String tmp = getCartUuid(username, uuid);
+        System.out.println("логируем 1 "+ tmp);
+        String targetUuid = cartPrefix + tmp;
         System.out.println("логируем 2 "+ targetUuid);
         if (!redisTemplate.hasKey(targetUuid)) {
             redisTemplate.opsForValue().set(targetUuid, new Cart());
@@ -50,13 +50,13 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public void remove(String uuid, String username, Long productId) {
+    public void remove(String username, String uuid, Long productId) {
         String targetUuid = getCartUuid(username, uuid);
         execute(targetUuid, cart -> cart.remove(productId));
     }
 
     @Override
-    public void clear(String uuid, String username) {
+    public void clear(String username, String uuid) {
         String targetUuid = getCartUuid(username, uuid);
         execute(targetUuid, Cart::clear);
     }
@@ -70,6 +70,7 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public String getCartUuid(String username, String uuid) {
+        System.out.println("getCartUuid   " + username +  "   " + uuid);
         if (username != null) {
             return username;
         }

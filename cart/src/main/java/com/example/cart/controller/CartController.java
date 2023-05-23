@@ -39,6 +39,7 @@ public class CartController {
 
     @GetMapping("/api/v1/cart/{uuid}")
     public CartDto getCurrentCart(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid) {
+        System.out.println(" cart контроллер   " + username +  "   " + uuid);
         return cartConverter.entityToDto(cartService.getCurrentCart(username, uuid));
     }
 }

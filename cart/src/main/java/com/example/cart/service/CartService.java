@@ -7,10 +7,10 @@ import java.util.function.Consumer;
 
 public interface CartService {
     StringResponse generateUuid();
-    Cart getCurrentCart(String uuid, String username);
-    void add(String uuid, String username, Long productId);
-    void remove(String uuid, String username, Long productId);
-    void clear(String uuid, String username);
+    Cart getCurrentCart(String username, String uuid);
+    void add(String username, String uuid, Long productId);
+    void remove(String username, String uuid, Long productId);
+    void clear(String username, String uuid);
     void execute(String uuid, Consumer<Cart> operation);
     String getCartUuid(String username, String uuid);
 }
