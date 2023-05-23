@@ -29,18 +29,7 @@ public class PictureServiceIntagration {
                 .block();
     }
 
-
-   /* public String createPicture(MultipartFile image) {
-        return pictureServiceWebClient.post()
-                .uri("/api/v1/picture/")
-                //.header("username", username)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }*/
-
     public String createPicture(MultipartFile image) {
-        // build the request body as multipart form data
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         if (image != null) {
             builder.part("image", image.getResource());

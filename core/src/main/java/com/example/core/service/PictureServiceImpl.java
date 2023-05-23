@@ -15,40 +15,18 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PictureServiceImpl implements PictureService {
-
 
     private final PictureServiceIntagration pictureServiceIntagration;
     private final PictureDao pictureDao;
 
-
     @Override
     public Optional<PictureDto> getPictureDataById(long id) {
-        System.out.println("Picture service " + id);
         Optional<Picture> picture = pictureDao.findPictureByProductId(id);
-        System.out.println("нашли в БД " + picture);
         PictureDto pictureDto = pictureServiceIntagration.getPicture(picture.get().getStorageFileName());
-        System.out.println("получили из интегации " + picture);
         pictureDto.setContentType(picture.get().getContentType());
         return Optional.ofNullable(pictureDto);
     }
-
-
-
-/*
-    @Override
-    public String createPicture(byte[] pictureData) {
-        String filename = UUID.randomUUID().toString();
-        try (OutputStream os = Files.newOutputStream(Paths.get("", filename))) {
-            os.write(pictureData);
-        } catch (IOException ex) {
-            log.error("Can't write to file", ex);
-            throw new RuntimeException(ex);
-        }
-        return filename;
-    }*/
-
 
     @Override
     public Picture createPicture(MultipartFile image, Product product) {
@@ -59,8 +37,4 @@ public class PictureServiceImpl implements PictureService {
         pictureDao.save(picture);
         return picture;
     }
-
-
-
-
 }

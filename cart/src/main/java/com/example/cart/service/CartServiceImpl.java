@@ -36,16 +36,11 @@ public class CartServiceImpl implements CartService{
     @Override
     public Cart getCurrentCart(String username, String uuid) {
         String tmp = getCartUuid(username, uuid);
-        System.out.println("логируем 1 "+ tmp);
         String targetUuid = cartPrefix + tmp;
-        System.out.println("логируем 2 "+ targetUuid);
         if (!redisTemplate.hasKey(targetUuid)) {
             redisTemplate.opsForValue().set(targetUuid, new Cart());
-            System.out.println("логируем 3 "+ targetUuid);
         }
         Cart cart = (Cart)redisTemplate.opsForValue().get(targetUuid);
-        System.out.println("логируем 4 "+ targetUuid);
-        System.out.println("логируем 5 " + cart);
         return cart;
     }
 
@@ -70,7 +65,6 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public String getCartUuid(String username, String uuid) {
-        System.out.println("getCartUuid   " + username +  "   " + uuid);
         if (username != null) {
             return username;
         }
