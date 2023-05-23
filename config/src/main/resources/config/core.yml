@@ -44,3 +44,5 @@ logging:
             function:
               client:
                 ExchangeFunctions: DEBUG
+  file:
+    name: /var/log/core.log
