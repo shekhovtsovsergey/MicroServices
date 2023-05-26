@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Продукты", description = "Методы работы с продуктами")
+@Tag(name = "Контроллер продуктов", description = "API работы с продуктами")
 public class ProductController {
 
     private final ProductService productService;
@@ -78,8 +78,7 @@ public class ProductController {
     )
     @GetMapping("/api/v1/products/{id}")
     public ProductDto findProductById(@PathVariable @Parameter(description = "Идентификатор продукта", required = true) Long id) {
-        Product p = productService.findById(id).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Продукт не найден, id: " + id));
-        return productConverter.entityToDto(p);
+        return productService.findById(id).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Продукт не найден, id: " + id));
     }
 
     @Operation(

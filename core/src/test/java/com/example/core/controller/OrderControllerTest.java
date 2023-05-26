@@ -7,12 +7,9 @@ import com.example.core.service.OrderService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -26,11 +23,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:application-test.properties")
-@DisplayName("Тест контроллера заказов")
-@AutoConfigureMockMvc
-@SpringBootTest
+@WebMvcTest(
+        value = OrderController.class,
+        properties = {"spring.cloud.config.enabled=false"}
+)
+@DisplayName("Контроллер заказов должен")
 public class OrderControllerTest {
 
     @Autowired
@@ -43,7 +40,7 @@ public class OrderControllerTest {
 
 
     @Test
-    @DisplayName("Успешное создание заказа")
+    @DisplayName("успешно создать заказ")
     public void testCreateOrderSuccess() throws Exception {
         mockMvc.perform(post("/api/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -55,7 +52,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Успешное получение списка заказов")
+    @DisplayName("получить список заказов по пользователю")
     public void testGetUserOrdersSuccess() throws Exception {
         List<Order> orders = Arrays.asList(new Order(), new Order());
         when(orderService.findByUsername(eq(username))).thenReturn(orders);
@@ -74,7 +71,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Заказы не найдены")
+    @DisplayName("не найти заказы")
     public void testGetUserOrdersNotFound() throws Exception {
         when(orderService.findByUsername(eq(username))).thenReturn(Collections.emptyList());
 

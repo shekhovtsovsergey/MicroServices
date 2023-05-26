@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Заказы", description = "Методы работы с заказами")
+@Tag(name = "Контроллер заказов", description = "API работы с заказами")
 public class OrderController {
 
 

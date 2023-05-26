@@ -1,5 +1,7 @@
 package com.example.core.service;
 
+import com.example.core.converter.ProductConverter;
+import com.example.core.dto.ProductDto;
 import com.example.core.exception.GlobalExceptionHandler;
 import com.example.core.model.Category;
 import com.example.core.model.Product;
@@ -21,6 +23,7 @@ public class ProductServiceImpl implements ProductService{
     private final ProductDao productRepository;
     private final CategoryServiceImpl categoryService;
     private final PictureService pictureService;
+    private final ProductConverter productConverter;
 
     @Override
     public Page<Product> findAll(Specification<Product> spec, int page) {
@@ -28,8 +31,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDto> findById(Long id) {
+        //Optional<Product> product = productRepository.findById(id);
+        //return productConverter.entityToDto(product);
+        return Optional.ofNullable(productConverter.entityToDto(productRepository.findById(id).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Product not found id " + id))));
     }
 
     @Override

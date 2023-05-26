@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Картинки", description = "Методы работы с картинками")
+@Tag(name = "Контроллер картинок", description = "API работы с картинками")
 public class PictureController {
 
     private final PictureService pictureService;

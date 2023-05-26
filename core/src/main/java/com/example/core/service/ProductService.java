@@ -1,5 +1,6 @@
 package com.example.core.service;
 
+import com.example.core.dto.ProductDto;
 import com.example.core.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,7 +12,7 @@ import java.util.Optional;
 public interface ProductService {
     Page<Product> findAll(Specification<Product> spec, int page);
 
-    Optional<Product> findById(Long id);
+    Optional<ProductDto> findById(Long id);
 
     void deleteById(Long id);
 
