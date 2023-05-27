@@ -17,11 +17,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Optional;
 
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(
         value = PictureController.class,
@@ -50,8 +53,9 @@ public class PictureControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/picture/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.IMAGE_PNG))
-                .andExpect(MockMvcResultMatchers.content().bytes(imageData));
+                .andExpect(jsonPath("$.contentType").value("image/png"))
+                .andExpect(jsonPath("$.data").value((Base64.getEncoder().encodeToString(imageData))))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 
         verify(pictureService, times(1)).getPictureDataById("1");
     }
