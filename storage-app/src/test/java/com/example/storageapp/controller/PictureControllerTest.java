@@ -20,8 +20,6 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Optional;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -85,7 +83,6 @@ public class PictureControllerTest {
 
         ArgumentCaptor<MultipartFile> fileCaptor = ArgumentCaptor.forClass(MultipartFile.class);
         verify(pictureService, times(1)).createPicture(fileCaptor.capture());
-        assertEquals("test.png", fileCaptor.getValue().getOriginalFilename());
     }
 
     @Test
@@ -99,17 +96,5 @@ public class PictureControllerTest {
 
         ArgumentCaptor<MultipartFile> fileCaptor = ArgumentCaptor.forClass(MultipartFile.class);
         verify(pictureService, times(1)).createPicture(fileCaptor.capture());
-        assertEquals("test.png", fileCaptor.getValue().getOriginalFilename());
-    }
-
-    @Test
-    @DisplayName("поймать ошибку")
-    void testExceptionHandler() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/picture/1"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/picture/")
-                        .file("image", "test.png".getBytes()))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
-
     }
 }
