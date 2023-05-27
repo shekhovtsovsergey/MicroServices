@@ -2,13 +2,11 @@ package com.example.core.controller;
 
 import com.example.core.converter.ProductConverter;
 import com.example.core.dto.ProductDto;
-import com.example.core.model.Category;
 import com.example.core.model.Product;
 import com.example.core.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
