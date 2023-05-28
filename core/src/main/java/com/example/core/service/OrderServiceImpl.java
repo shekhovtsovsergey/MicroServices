@@ -26,25 +26,6 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public Order createOrder(String username) {
         CartDto cartDto = cartServiceIntegration.getCurrentCart(username);
-
-/*
-        Order order = new Order();
-        order.setUsername(username);
-        order.setTotalPrice(cartDto.getTotalPrice());
-        order.setItems(cartDto.getItems().stream().map(
-                cartItem -> new OrderItem(
-                        productService.findById(cartItem.getProductId()).get(),
-                        order,
-                        cartItem.getQuantity(),
-                        cartItem.getPricePerProduct(),
-                        cartItem.getPrice()
-                )
-        ).collect(Collectors.toList()));
-        orderRepository.save(order);
-        cartServiceIntegration.clear(username);
-        return order;
-*/
-
         Order order = new Order();
         order.setUsername(username);
         order.setTotalPrice(cartDto.getTotalPrice());

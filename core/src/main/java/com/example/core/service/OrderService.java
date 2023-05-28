@@ -8,6 +8,5 @@ import java.util.List;
 public interface OrderService {
     @Transactional
     Order createOrder(String username);
-
     List<Order> findByUsername(String username);
 }

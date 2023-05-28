@@ -11,7 +11,6 @@ public class CartServiceIntegration {
     private final WebClient cartServiceWebClient;
 
     public CartDto getCurrentCart(String username) {
-        System.out.println("В интеграции в core     " + username);
         return cartServiceWebClient.get()
                 .uri("/api/v1/cart/0")
                 .header("username", username)

@@ -23,7 +23,6 @@ public class PictureServiceIntagration {
     public PictureDto getPicture(String id) {
         return pictureServiceWebClient.get()
                 .uri("/api/v1/picture/"+id)
-                //.header("username", username)
                 .retrieve()
                 .bodyToMono(PictureDto.class)
                 .block();
