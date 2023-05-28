@@ -32,8 +32,6 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Optional<ProductDto> findById(Long id) {
-        //Optional<Product> product = productRepository.findById(id);
-        //return productConverter.entityToDto(product);
         return Optional.ofNullable(productConverter.entityToDto(productRepository.findById(id).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Product not found id " + id))));
     }
 
