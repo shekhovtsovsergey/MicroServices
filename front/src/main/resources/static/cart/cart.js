@@ -9,13 +9,13 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     }
 
     $scope.clearCart = function () {
-        $http.get(contextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId + '/clear').then(function (response) {
+        $http.delete(contextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId + '/clear').then(function (response) {
             $scope.loadCart();
         });
     }
 
     $scope.removeFromCart = function (productId) {
-        $http.get(contextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId + '/remove/' + productId).then(function (response) {
+        $http.delete(contextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId + '/remove/' + productId).then(function (response) {
             $scope.loadCart();
         });
     }

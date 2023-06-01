@@ -28,8 +28,11 @@ public class AuthController {
     private final JwtTokenService jwtTokenService;
 
     @PostMapping("/auth")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequestDto authRequest) {
-        return jwtTokenService.createAuthToken(authRequest);
+    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequestDto jwtRequestDto) {
+        System.out.println("контроллер createAuthToken" + jwtRequestDto);
+        ResponseEntity<?> token = jwtTokenService.createAuthToken(jwtRequestDto);
+        System.out.println(token);
+        return token;
     }
 
     @PostMapping("/registration")

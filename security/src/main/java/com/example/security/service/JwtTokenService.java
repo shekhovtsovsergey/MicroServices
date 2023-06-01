@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtTokenService {
     public String generateToken(UserDetails userDetails);
-    public ResponseEntity<?> createAuthToken(JwtRequestDto authRequest);
+    public ResponseEntity<?> createAuthToken(JwtRequestDto jwtRequestDto);
     public ResponseEntity<?> createAuthTokenAndRegisterUser(RegistrationUserDto registrationUserDto);
 
 }

@@ -17,7 +17,7 @@ spring:
     console:
       enabled: true
       settings:
-        web-allow-others: false
+        web-allow-others: true
 jwt:
   secret: secretKey
   lifetime: 36000000

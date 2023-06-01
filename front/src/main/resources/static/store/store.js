@@ -19,7 +19,7 @@ angular.module('market').controller('storeController', function ($scope, $http, 
         });
     }
     $scope.addToCart = function (productId) {
-        $http.get(cartContextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId + '/add/' + productId).then(function (response) {
+        $http.post(cartContextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId + '/add/' + productId).then(function (response) {
         });
     }
     $scope.generatePagesList = function (totalPages) {

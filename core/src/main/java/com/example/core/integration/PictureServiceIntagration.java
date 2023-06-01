@@ -41,6 +41,4 @@ public class PictureServiceIntagration {
                 .bodyToMono(String.class)
                 .block();
     }
-
-
 }

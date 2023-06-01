@@ -38,7 +38,7 @@ public class CartControllerTest {
     @DisplayName("генерировать UUID")
     void shouldGenerateUuid() throws Exception {
         when(cartService.generateUuid()).thenReturn(new StringResponse("abcd1234"));
-        mockMvc.perform(get("/api/v1/cart/generate_uuid"))
+        mockMvc.perform(get("/api/v1/cart/uuid"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.value").value("abcd1234"));
     }
@@ -47,7 +47,7 @@ public class CartControllerTest {
     @DisplayName("добавлять в корзину")
     void shouldAddToCart() throws Exception {
         doNothing().when(cartService).add(anyString(), anyString(), anyLong());
-        mockMvc.perform(get("/api/v1/cart/abcd1234/add/1").header("username", "user"))
+        mockMvc.perform(post("/api/v1/cart/abcd1234/add/1").header("username", "user"))
                 .andExpect(status().isOk());
         verify(cartService).add("user", "abcd1234", 1L);
     }
@@ -56,7 +56,7 @@ public class CartControllerTest {
     @DisplayName("очищать корзину")
     void shouldClearCart() throws Exception {
         doNothing().when(cartService).clear(anyString(), anyString());
-        mockMvc.perform(get("/api/v1/cart/abcd1234/clear").header("username", "user"))
+        mockMvc.perform(delete("/api/v1/cart/abcd1234/clear").header("username", "user"))
                 .andExpect(status().isOk());
         verify(cartService).clear("user", "abcd1234");
     }
@@ -65,7 +65,7 @@ public class CartControllerTest {
     @DisplayName("удалять из корзины")
     void shouldRemoveFromCart() throws Exception {
         doNothing().when(cartService).remove(anyString(), anyString(), anyLong());
-        mockMvc.perform(get("/api/v1/cart/abcd1234/remove/1").header("username", "user"))
+        mockMvc.perform(delete("/api/v1/cart/abcd1234/remove/1").header("username", "user"))
                 .andExpect(status().isOk());
         verify(cartService).remove("user", "abcd1234", 1L);
     }

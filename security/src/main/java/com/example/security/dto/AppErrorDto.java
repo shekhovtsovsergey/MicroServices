@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @Builder
 @EqualsAndHashCode
+@ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class AppErrorDto {

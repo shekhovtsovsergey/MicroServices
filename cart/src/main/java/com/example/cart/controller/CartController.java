@@ -17,22 +17,22 @@ public class CartController {
     private final CartService cartService;
     private final CartConverter cartConverter;
 
-    @GetMapping("/api/v1/cart/generate_uuid")
+    @GetMapping("/api/v1/cart/uuid")
     public StringResponse generateUuid() {
         return cartService.generateUuid();
     }
 
-    @GetMapping("/api/v1/cart/{uuid}/add/{id}")
+    @PostMapping("/api/v1/cart/{uuid}/add/{id}")
     public void addToCart(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid, @PathVariable Long id) {
         cartService.add(username, uuid, id);
     }
 
-    @GetMapping("/api/v1/cart/{uuid}/clear")
+    @DeleteMapping("/api/v1/cart/{uuid}/clear")
     public void clearCart(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid) {
         cartService.clear(username, uuid);
     }
 
-    @GetMapping("/api/v1/cart/{uuid}/remove/{id}")
+    @DeleteMapping("/api/v1/cart/{uuid}/remove/{id}")
     public void removeFromCart(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid, @PathVariable Long id) {
         cartService.remove(username, uuid, id);
     }
@@ -41,4 +41,5 @@ public class CartController {
     public CartDto getCurrentCart(@RequestHeader(name = "username", required = false) String username, @PathVariable String uuid) {
         return cartConverter.entityToDto(cartService.getCurrentCart(username, uuid));
     }
+
 }

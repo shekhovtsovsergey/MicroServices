@@ -20,7 +20,7 @@ public class CartServiceIntegration {
     }
 
     public void clear(String username) {
-        cartServiceWebClient.get()
+        cartServiceWebClient.delete()
                 .uri("/api/v1/cart/0/clear")
                 .header("username", username)
                 .retrieve()

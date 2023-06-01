@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
+@ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class JwtResponseDto {

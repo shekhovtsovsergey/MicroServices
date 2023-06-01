@@ -17,7 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -38,7 +37,6 @@ public class JwtTokenServiceImpl implements JwtTokenService{
     private final UserServiceImpl userService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public String generateToken(UserDetails userDetails) {
@@ -61,14 +59,18 @@ public class JwtTokenServiceImpl implements JwtTokenService{
 
 
     @Override
-    public ResponseEntity<?> createAuthToken(JwtRequestDto authRequest) {
+    public ResponseEntity<?> createAuthToken(JwtRequestDto jwtRequestDto) {
+        System.out.println("сервис createAuthToken"+jwtRequestDto);
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequestDto.getUsername(), jwtRequestDto.getPassword()));
+            System.out.println("сервис createAuthToken"+jwtRequestDto);
         } catch (BadCredentialsException e) {
+            System.out.println("сервис createAuthToken"+e);
             return new ResponseEntity<>(new AppErrorDto(HttpStatus.UNAUTHORIZED.value(), "Incorrect username or password"), HttpStatus.UNAUTHORIZED);
         }
-        UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
+        UserDetails userDetails = userService.loadUserByUsername(jwtRequestDto.getUsername());
         String token = generateToken(userDetails);
+        System.out.println(token);
         return ResponseEntity.ok(new JwtResponseDto(token));
     }
 
