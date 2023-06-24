@@ -14,3 +14,4 @@ public class CartServiceIntegrationProperties {
     private Integer writeTimeout;
     private String storage;
 }
+//уйдет в фабрику

@@ -13,5 +13,5 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartDto {
     private List<CartItemDto> items;
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice;//округление сделать
 }

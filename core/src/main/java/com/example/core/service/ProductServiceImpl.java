@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteById(id);
     }
 
-    @Override
+    @Override//добавить валидацию на создание продуктов
     public Product createNewProduct(String title, BigDecimal price, String type, MultipartFile image) {
         Category category = categoryService.findByTitle(type).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Category not found"));
         Product product = new Product(title,price,category);

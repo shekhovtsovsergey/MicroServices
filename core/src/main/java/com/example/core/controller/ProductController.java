@@ -61,7 +61,7 @@ public class ProductController {
         out.setTotalPages(jpaPage.getTotalPages());
         return out;
     }
-
+    //сделать отдельный метод сеарч в который передается JSON с параметрами и ищется нужный продукт по параметрам JSON (POST) findProducts
 
     @Operation(
             summary = "Запрос на получение продукта по id",
