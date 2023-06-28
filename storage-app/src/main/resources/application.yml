@@ -1,0 +1,10 @@
+server:
+  port: 8191
+  servlet:
+    context-path: /store
+integrations:
+  storage: /storage
+APP_RESOURCES_PATH: /app/resources
+APP_STORAGE_PATH: app/storage
+storage:
+  path: app/storage
