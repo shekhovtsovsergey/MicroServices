@@ -10,7 +10,5 @@ import java.util.Optional;
 
 public interface PictureService {
 
-
-    Optional<PictureDto> getPictureDataById(long id);
     Picture createPicture(MultipartFile image, Product productId);
 }

@@ -1,7 +1,7 @@
 package com.shekhovtsov.security.service;
 
 import com.shekhovtsov.security.model.Role;
-import com.shekhovtsov.security.dao.RoleRepository;
+import com.shekhovtsov.security.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

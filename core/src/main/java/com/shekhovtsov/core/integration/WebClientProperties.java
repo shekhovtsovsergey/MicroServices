@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @Data
-public class BaseServiceIntegrationProperties {
+public class WebClientProperties {
     private String name;
     private String url;
     private Integer connectTimeout;

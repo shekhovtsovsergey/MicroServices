@@ -1,40 +1,55 @@
 package com.shekhovtsov.core.model;
 
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.annotation.Reference;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "order_items")
+@Table("order_items")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItem {
+
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+
+    //@Reference(to = Product.class)
+    @MappedCollection
     private Product product;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+
+    //@Reference(to = Order.class)
     private Order order;
-    @Column(name = "quantity")
+
     private int quantity;
-    @Column(name = "price_per_product")
+
+    @Column("price_per_product")
     private BigDecimal pricePerProduct;
-    @Column(name = "price")
+
     private BigDecimal price;
-    @CreationTimestamp
-    @Column(name = "created_at")
+
+    @CreatedDate
+    @Column("created_at")
     private LocalDateTime createdAt;
-    @UpdateTimestamp
-    @Column(name = "updated_at")
+
+    @LastModifiedDate
+    @Column("updated_at")
     private LocalDateTime updatedAt;
+    public void setPricePerProduct(BigDecimal pricePerProduct) {
+        this.pricePerProduct = pricePerProduct.setScale(2, RoundingMode.HALF_UP);
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price.setScale(2, RoundingMode.HALF_UP);
+    }
 }

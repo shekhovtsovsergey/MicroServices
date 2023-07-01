@@ -10,32 +10,25 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.TcpClient;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebClientFactory {
 
-    private final List<BaseServiceIntegrationProperties> integrationPropertiesList;
-
-    public WebClient createWebClient(String serviceName) {
-        BaseServiceIntegrationProperties integrationProperties = integrationPropertiesList.stream()
-                .filter(properties -> properties.getName().equals(serviceName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Service not found."));
+    public WebClient createWebClient(WebClientProperties webClientProperties) {
 
         TcpClient tcpClient = TcpClient
                 .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, integrationProperties.getConnectTimeout())
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, webClientProperties.getConnectTimeout())
                 .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(integrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(integrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new ReadTimeoutHandler(webClientProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(webClientProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
                 });
 
         return WebClient
                 .builder()
-                .baseUrl(integrationProperties.getUrl())
+                .baseUrl(webClientProperties.getUrl())
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }

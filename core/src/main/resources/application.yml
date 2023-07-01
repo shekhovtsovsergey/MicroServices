@@ -1,33 +1,3 @@
-server:
-  port: 8189
-  servlet:
-    context-path: /core
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/some_db
-    username: some_user
-    password: some_password
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-integrations:
-  cart-service:
-    name: cart
-    url: http://cart:8190/cart/
-    connect-timeout: 5000
-    read-timeout: 10000
-    write-timeout: 5000
-logging:
-  level:
-    org:
-      springframework:
-        web:
-          reactive:
-            function:
-              client:
-                ExchangeFunctions: DEBUG
-  file:
-    name: /var/log/core.log
+  profiles:
+    active: dev

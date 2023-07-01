@@ -1,4 +1,4 @@
-package com.shekhovtsov.security.dao;
+package com.shekhovtsov.security.repository;
 
 
 import com.shekhovtsov.security.model.Role;

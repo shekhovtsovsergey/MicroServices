@@ -1,35 +1,31 @@
 package com.shekhovtsov.core.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
+
 @Data
-@Table(name = "categories")
-@NoArgsConstructor
+@Table("categories")
 public class Category {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
+    @Column("created_at")
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column("updated_at")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    private List<Product> products;
 }

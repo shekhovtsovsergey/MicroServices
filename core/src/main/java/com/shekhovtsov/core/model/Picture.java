@@ -1,30 +1,31 @@
 package com.shekhovtsov.core.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.Reference;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.*;
-
-@Entity
+@Table("pictures")
 @Getter
 @Setter
-@NoArgsConstructor
-@Table(name = "pictures")
 public class Picture {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content_type", nullable = false)
+    @Column("content_type")
     private String contentType;
 
-    @Column(name = "storage_file_name", length = 256, nullable = false, unique = true)
+    @Column("storage_file_name")
     private String storageFileName;
 
-    @ManyToOne(optional = false)
+    //@Reference(to = Product.class)
     private Product product;
 
-
+    @PersistenceConstructor
     public Picture(String contentType, String storageFileName, Product product) {
         this.contentType = contentType;
         this.storageFileName = storageFileName;

@@ -1,19 +1,18 @@
 package com.shekhovtsov.core.integration;
 
 import com.shekhovtsov.core.dto.CartDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Component
 @RequiredArgsConstructor
 public class CartServiceIntegration {
 
-    private final WebClientFactory webClientFactory;
+    private final WebClient webClient;
 
     public CartDto getCurrentCart(String username) {
-        WebClient cartServiceWebClient = webClientFactory.createWebClient("cart");
-        return cartServiceWebClient.get()
+        return webClient.get()
                 .uri("/api/v1/cart/0")
                 .header("username", username)
                 .retrieve()
@@ -22,8 +21,7 @@ public class CartServiceIntegration {
     }
 
     public void clear(String username) {
-        WebClient cartServiceWebClient = webClientFactory.createWebClient("cart");
-        cartServiceWebClient.delete()
+        webClient.delete()
                 .uri("/api/v1/cart/0/clear")
                 .header("username", username)
                 .retrieve()

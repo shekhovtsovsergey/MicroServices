@@ -1,54 +1,53 @@
 package com.shekhovtsov.core.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Embedded;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
+@Table("products")
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
-@Table(name = "products")
 @NoArgsConstructor
 public class Product {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "price")
     private BigDecimal price;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @Embedded.Nullable
     private Category category;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
+    @CreatedDate
+    @Column("created_at")
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
+    @LastModifiedDate
+    @Column("updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "product",
-            orphanRemoval = true,
-            cascade = CascadeType.ALL)
+    @MappedCollection(idColumn = "product_id", keyColumn = "seq")
     private List<Picture> pictures = new ArrayList<>();
+
 
     public Product(String title, BigDecimal price, Category category) {
         this.title = title;
-        this.price = price;
+        this.price = price.setScale(2, BigDecimal.ROUND_HALF_UP);
         this.category = category;
     }
 }

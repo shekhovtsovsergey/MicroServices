@@ -5,7 +5,6 @@ import com.shekhovtsov.core.dto.AppError;
 import com.shekhovtsov.core.dto.PageDto;
 import com.shekhovtsov.core.dto.ProductDto;
 import com.shekhovtsov.core.exception.GlobalExceptionHandler;
-import com.shekhovtsov.core.model.Product;
 import com.shekhovtsov.core.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,8 +50,8 @@ public class ProductController {
         if (page < 1) {
             page = 1;
         }
-        Specification<Product> spec = productService.createSpecByFilters(minPrice, maxPrice, title);
-        Page<ProductDto> jpaPage = productService.findAll(spec, page - 1).map(productConverter::entityToDto);
+//        Specification<Product> spec = productService.createSpecByFilters(minPrice, maxPrice, title);
+        Page<ProductDto> jpaPage = productService.findAll(page - 1).map(productConverter::entityToDto);
 
         PageDto<ProductDto> out = new PageDto<>();
         out.setPage(jpaPage.getNumber());

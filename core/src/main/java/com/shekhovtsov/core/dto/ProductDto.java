@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Getter
 @Setter
@@ -21,4 +22,9 @@ public class ProductDto {
     private BigDecimal price;
     @Schema(description = "Категория продукта", required = true, example = "Еда")
     private String categoryTitle;
+
+    public void setPrice(BigDecimal price) {
+        this.price = price.setScale(2, RoundingMode.HALF_UP);
+    }
+
 }

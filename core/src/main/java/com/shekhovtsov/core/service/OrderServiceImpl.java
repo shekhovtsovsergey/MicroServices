@@ -5,7 +5,7 @@ import com.shekhovtsov.core.dto.CartDto;
 import com.shekhovtsov.core.model.Order;
 import com.shekhovtsov.core.model.OrderItem;
 import com.shekhovtsov.core.integration.CartServiceIntegration;
-import com.shekhovtsov.core.dao.OrderDao;
+import com.shekhovtsov.core.repository.OrderRepository;
 import com.shekhovtsov.core.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
     private final ProductServiceImpl productService;
-    private final OrderDao orderRepository;
+    private final OrderRepository orderRepository;
     private final CartServiceIntegration cartServiceIntegration;
     private final ProductConverter productConverter;
 

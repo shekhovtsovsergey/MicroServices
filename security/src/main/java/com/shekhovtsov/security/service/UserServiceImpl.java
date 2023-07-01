@@ -2,7 +2,7 @@ package com.shekhovtsov.security.service;
 
 import com.shekhovtsov.security.model.Role;
 import com.shekhovtsov.security.model.User;
-import com.shekhovtsov.security.dao.UserRepository;
+import com.shekhovtsov.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
