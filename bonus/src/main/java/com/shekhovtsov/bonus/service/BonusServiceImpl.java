@@ -52,10 +52,9 @@ public class BonusServiceImpl implements BonusService{
     }
 
     @Override
-    @Scheduled(cron = "0 0 0 * * *") // Каждый день в полночь
+    @Scheduled(cron = "${scheduler.deleteExpiredBonuses}") // Каждый день в полночь
     public void deleteExpiredBonuses() {
         LocalDateTime now = LocalDateTime.now();
         bonusRepository.deleteByExpireDateBefore(now);
     }
-
 }

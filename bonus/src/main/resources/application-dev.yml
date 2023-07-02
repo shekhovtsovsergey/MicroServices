@@ -34,3 +34,5 @@ logging:
                 ExchangeFunctions: DEBUG
   file:
     name: /var/log/bonus.log
+scheduler:
+  deleteExpiredBonuses: "0 0 0 * * *" # Каждый день в полночь
