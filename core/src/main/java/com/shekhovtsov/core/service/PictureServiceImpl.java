@@ -19,7 +19,7 @@ public class PictureServiceImpl implements PictureService {
     public Picture createPicture(MultipartFile image, Product product) {
         String storageFileName = pictureServiceIntegration.createPicture(image);
         Picture picture = new Picture("image/jpeg", storageFileName, product);
-        product.getPictures().add(picture);
+//        product.getPictures().add(picture);
         picture.setProduct(product);
         pictureRepository.save(picture);
         return picture;

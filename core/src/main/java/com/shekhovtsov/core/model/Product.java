@@ -5,14 +5,10 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Embedded;
-import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Table("products")
@@ -30,8 +26,8 @@ public class Product {
 
     private BigDecimal price;
 
-    @Embedded.Nullable
-    private Category category;
+//    @Embedded.Nullable
+    private Long category_id;
 
     @CreatedDate
     @Column("created_at")
@@ -41,13 +37,13 @@ public class Product {
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
-    @MappedCollection(idColumn = "product_id", keyColumn = "seq")
-    private List<Picture> pictures = new ArrayList<>();
+//    @MappedCollection(idColumn = "product_id", keyColumn = "seq")
+//    private List<Picture> pictures = new ArrayList<>();
 
 
-    public Product(String title, BigDecimal price, Category category) {
+    public Product(String title, BigDecimal price, Long category) {
         this.title = title;
         this.price = price.setScale(2, BigDecimal.ROUND_HALF_UP);
-        this.category = category;
+        this.category_id = category;
     }
 }

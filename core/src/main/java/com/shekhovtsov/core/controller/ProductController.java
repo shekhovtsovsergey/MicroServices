@@ -5,6 +5,7 @@ import com.shekhovtsov.core.dto.AppError;
 import com.shekhovtsov.core.dto.PageDto;
 import com.shekhovtsov.core.dto.ProductDto;
 import com.shekhovtsov.core.exception.GlobalExceptionHandler;
+import com.shekhovtsov.core.model.Product;
 import com.shekhovtsov.core.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,12 +15,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +33,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductConverter productConverter;
+    private static final int PAGE_SIZE = 5;
 
     @Operation(
             summary = "Запрос на получение отфильтрованного списка продуктов",
@@ -40,9 +46,7 @@ public class ProductController {
     )
     @GetMapping("/api/v1/products")
     public PageDto<ProductDto> findProducts(
-            @Parameter(description = "Минимальная цена продукта", required = false)
             @RequestParam(required = false, name = "min_price") Integer minPrice,
-
             @RequestParam(required = false, name = "max_price") Integer maxPrice,
             @RequestParam(required = false, name = "title") String title,
             @RequestParam(defaultValue = "1", name = "p") Integer page
@@ -50,14 +54,17 @@ public class ProductController {
         if (page < 1) {
             page = 1;
         }
-//        Specification<Product> spec = productService.createSpecByFilters(minPrice, maxPrice, title);
-        Page<ProductDto> jpaPage = productService.findAll(page - 1).map(productConverter::entityToDto);
-
+        //   Specification<Product> spec = productService.createSpecByFilters(minPrice, maxPrice, title);
+        List<Product> products = productService.findAll();
+        List<ProductDto> productDtos = products.stream()
+                .map(productConverter::entityToDto)
+                .collect(Collectors.toList());
         PageDto<ProductDto> out = new PageDto<>();
-        out.setPage(jpaPage.getNumber());
-        out.setItems(jpaPage.getContent());
-        out.setTotalPages(jpaPage.getTotalPages());
+        out.setPage(1);
+        out.setItems(productDtos);
+        out.setTotalPages(1);
         return out;
+//        return null;
     }
     //сделать отдельный метод сеарч в который передается JSON с параметрами и ищется нужный продукт по параметрам JSON (POST) findProducts
 

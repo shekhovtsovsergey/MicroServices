@@ -7,13 +7,9 @@ import com.shekhovtsov.core.model.Category;
 import com.shekhovtsov.core.model.Product;
 import com.shekhovtsov.core.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +26,8 @@ public class ProductServiceImpl implements ProductService{
 
 
     @Override
-    public Page<Product> findAll(int page) {
-        return (Page<Product>) new ArrayList<>((Collection) productRepository.findAll());
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
 
@@ -48,12 +44,9 @@ public class ProductServiceImpl implements ProductService{
     @Override//добавить валидацию на создание продуктов
     public Product createNewProduct(String title, BigDecimal price, String type, MultipartFile image) {
         Category category = categoryService.findByTitle(type).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Category not found"));
-        Product product = new Product(title,price,category);
+        Product product = new Product(title,price,category.getId());
         productRepository.save(product);
         pictureService.createPicture(image,product);
         return product;
     }
-
-
-
 }

@@ -27,7 +27,10 @@ public class CoreApplication {
 //+скачать картинку убрать из кора, фронт должен спросить потом в пикче***********потом****
 
 
-//оживить JDBC исправить ошибку(org.springframework.data.mapping.MappingException: Couldn't find PersistentEntity for type class java.lang.Long)
+
+//+оживить JDBC исправить ошибку(org.springframework.data.mapping.MappingException: Couldn't find PersistentEntity for type class java.lang.Long)
+
+
 //Сделать новый модуль "Бонусы"
     //при покупке начислять бонусы клиенту
     //у бонусов должно быть время жизни

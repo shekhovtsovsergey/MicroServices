@@ -95,5 +95,16 @@ services:
       - "5433:5432"
     networks:
       - some-net
+  postgres-bonus:
+    image: 'postgres:latest'
+    container_name: postgres-bonus
+    environment:
+      POSTGRES_DB: some_db
+      POSTGRES_USER: some_user
+      POSTGRES_PASSWORD: some_password
+    ports:
+      - "5434:5432"
+    networks:
+      - some-net
 networks:
   some-net:

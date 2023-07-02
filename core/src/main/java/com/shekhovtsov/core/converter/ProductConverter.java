@@ -14,7 +14,7 @@ public class ProductConverter {
     private final CategoryService categoryService;
 
     public ProductDto entityToDto(Product product) {
-        return new ProductDto(product.getId(), product.getTitle(), product.getPrice(), product.getCategory().getTitle());
+        return new ProductDto(product.getId(), product.getTitle(), product.getPrice(), null);
     }
 
     public Product dtoToEntity(ProductDto productDto) {
@@ -23,7 +23,7 @@ public class ProductConverter {
         p.setTitle(productDto.getTitle());
         p.setPrice(productDto.getPrice());
         Category c = categoryService.findByTitle(productDto.getCategoryTitle()).orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Категория не найдена"));
-        p.setCategory(c);
+        p.setCategory_id(c.getId());
         return p;
     }
 }
