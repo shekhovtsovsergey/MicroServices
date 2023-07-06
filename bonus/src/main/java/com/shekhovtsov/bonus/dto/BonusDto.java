@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -22,8 +23,8 @@ public class BonusDto {
     private Long clientId;
     @Schema(description = "Сумма бонуса", required = true, example = "50.00")
     private BigDecimal amount;
-    @Schema(description = "Дата истечения бонуса", required = true, example = "2022-12-31T23:59:59")
-    private LocalDateTime expireDate;
+    @Schema(description = "Дата истечения бонуса", required = true, example = "2022-12-31")
+    private LocalDate expireDate;
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);

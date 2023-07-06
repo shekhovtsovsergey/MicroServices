@@ -3,8 +3,10 @@ package com.shekhovtsov.bonus.controller;
 import com.shekhovtsov.bonus.dto.BonusDto;
 import com.shekhovtsov.bonus.exception.ClientNotFoundException;
 import com.shekhovtsov.bonus.model.Bonus;
+import com.shekhovtsov.bonus.repository.BonusRepository;
 import com.shekhovtsov.bonus.service.BonusService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,14 +23,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/bonus")
+@RequestMapping("/api/v1/bonuses")
 @Slf4j
 @Tag(name = "Контроллер бонусов", description = "API работы с бонусами")
 public class BonusController {
 
     private final BonusService bonusService;
+    private final BonusRepository bonusRepository;
 
-    @GetMapping("/{clientId}")
+
+    //клиентИд перенести в хедер
+    @GetMapping()
     @Operation(
             summary = "Запрос на получение списка бонусов пользователя",
             responses = {
@@ -43,11 +49,13 @@ public class BonusController {
                     )
             }
     )
-    public List<BonusDto> getBonusesByClientId(@PathVariable Long clientId) {
+    //Лист не возвращать
+    public List<BonusDto> getByClientId(@RequestHeader Long clientId) {
         return bonusService.getBonusesByClientId(clientId);
     }
 
-    @GetMapping("/{clientId}/total")
+/*    //обьединить методы
+    @GetMapping("/total")
     @Operation(
             summary = "Запрос на получение общего количества бонусов пользователя",
             responses = {
@@ -63,11 +71,14 @@ public class BonusController {
                     )
             }
     )
-    public Integer getTotalBonusesByClientId(@PathVariable Long clientId) {
+    //интежер заменить на DTO
+    public Integer getTotalByClientId(@RequestHeader Long clientId) {
         return bonusService.getTotalBonusesByClientId(clientId);
-    }
+    }*/
 
-    @PostMapping("/{clientId}/spend")
+
+
+    @PutMapping("/spend")
     @Operation(
             summary = "Запрос на списание бонусов пользователя",
             responses = {
@@ -81,12 +92,15 @@ public class BonusController {
                             content = @Content(schema = @Schema(implementation = ClientNotFoundException.class))
                     )
             }
-    )
-    public void spendBonuses(@PathVariable Long clientId, @RequestParam BigDecimal amount) {
+    )//BigDecimal на какую категорию тратим заменить JSON
+    public void spend(@RequestHeader Long clientId, @RequestParam BigDecimal amount) {
         bonusService.spendBonuses(clientId, amount);
     }
 
-    @PostMapping ("/addBonus")
+
+
+
+    @PostMapping("/add")
     @Operation(
             summary = "Запрос на добавление бонусов пользователю",
             responses = {
@@ -96,20 +110,29 @@ public class BonusController {
                     ),
                     @ApiResponse(
                             description = "Пользователь не найден",
-                            responseCode = "404",
+                            responseCode = "404",//500
                             content = @Content(schema = @Schema(implementation = ClientNotFoundException.class))
                     )
             }
-    )
-    public void addBonus(@RequestParam Long clientId, @RequestParam BigDecimal bonusAmount) throws Exception {
+    )//категории + JSON c с расширяемым списоком полей
+    public void add(@RequestHeader Long clientId, @RequestParam BigDecimal bonusAmount) throws Exception {
         bonusService.addBonus(clientId, bonusAmount);
     }
 
 
-    @ExceptionHandler({ClientNotFoundException.class,Exception.class})
+
+    /*//вынести в глобальный перехватчик
+    @ExceptionHandler({ClientNotFoundException.class, Exception.class})
     private ResponseEntity<String> handleNotFound(Exception e) {
         log.error(e.getMessage());
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return new ResponseEntity<ErrorDto>("a", HttpStatus.INTERNAL_SERVER_ERROR);
+        //создаем отдельный класс errorDto(время сам заполняет, сообщение, код ошибки)//все не найденное в ресурснотфауннд второй сервис интернал сервер еерор
+    }*/
+
+
+    @GetMapping("/demo")
+    public BigDecimal getTotal() {
+        return bonusRepository.getTotalBonusesByClientId(1L);
     }
 
 }

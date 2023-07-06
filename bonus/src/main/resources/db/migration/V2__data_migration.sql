@@ -1,4 +1,4 @@
-INSERT INTO bonus (client_id, amount, expire_date) VALUES
+INSERT INTO bonuses (client_id, amount, expire_date) VALUES
                                                        (1, 100, '2022-12-31 23:59:59'),
                                                        (2, 50, '2023-06-30 23:59:59'),
                                                        (3, 200, '2022-10-31 23:59:59'),

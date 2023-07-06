@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class BonusConverter {
 
-    private final BonusService bonusService;
 
     public BonusDto entityToDto(Bonus bonus) {
         return new BonusDto(bonus.getId(), bonus.getClientId(), bonus.getAmount(), bonus.getExpireDate());

@@ -1,4 +1,4 @@
-CREATE TABLE bonus (
+CREATE TABLE bonuses (
                        id BIGSERIAL PRIMARY KEY,
                        client_id BIGINT,
                        amount INTEGER,
