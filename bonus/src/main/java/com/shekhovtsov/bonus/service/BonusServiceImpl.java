@@ -2,16 +2,22 @@ package com.shekhovtsov.bonus.service;
 
 import com.shekhovtsov.bonus.converter.BonusConverter;
 import com.shekhovtsov.bonus.dto.BonusDto;
+import com.shekhovtsov.bonus.exception.ResourceNotFoundException;
 import com.shekhovtsov.bonus.model.Bonus;
+import com.shekhovtsov.bonus.model.BonusDetail;
+import com.shekhovtsov.bonus.repository.BonusDetailRepository;
 import com.shekhovtsov.bonus.repository.BonusRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,79 +26,103 @@ import java.util.stream.Collectors;
 public class BonusServiceImpl implements BonusService {
 
     private final BonusRepository bonusRepository;
+    private final BonusDetailRepository bonusDetailRepository;
     private final BonusConverter bonusConverter;
     private final int BONUS_EXP = 1;
 
 
     @Override
-    public List<BonusDto> getBonusesByClientId(Long clientId) {
-        return bonusRepository.findByClientId(clientId).stream().map(bonusConverter::entityToDto).collect(Collectors.toList());
+    public Page<BonusDto> getBonusesByClientId(Long clientId, Pageable pageable) {
+        List<BonusDto> bonusDtos = bonusRepository.findByClientId(clientId)
+                .stream()
+                .map(bonusConverter::entityToDto)
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), bonusDtos.size());
+        Page<BonusDto> page = new PageImpl<>(bonusDtos.subList(start, end), pageable, bonusDtos.size());
+
+        return page;
     }
+
 
     @Override
-    public BigDecimal getTotalBonusesByClientId(Long clientId) {
-        return bonusRepository.getTotalBonusesByClientId(clientId);
-    }
-
-    @Override
-    @Transactional
-    public void spendBonuses(Long clientId, BigDecimal amount) {
-        List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(clientId);
-        BigDecimal remainingAmount = amount;
+    public void spendBonuses(BonusDto bonusDto) {
+        List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(bonusDto.getClientId());
+        BigDecimal spendAmount = bonusDto.getAmount();
+        List<BonusDetail> bonusDetails = new ArrayList<>();
         for (Bonus bonus : bonuses) {
-            if (remainingAmount.compareTo(BigDecimal.ZERO) <= 0) {
-                break;
-            }
-            BigDecimal bonusAmount = bonus.getAmount();
 
-            if (bonusAmount.compareTo(remainingAmount) >= 0) {
-                bonus.setAmount(bonusAmount.subtract(remainingAmount));
-                remainingAmount = BigDecimal.ZERO;
-            } else {
-                bonus.setAmount(BigDecimal.ZERO);
-                remainingAmount = remainingAmount.subtract(bonusAmount);
-            }
-            bonusRepository.save(bonus);
-        }
-    }
-
-
-    @Transactional
-    public void spendBonuses2(Long clientId, BigDecimal spendAmount) {
-        List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(clientId);
-        for (Bonus bonus : bonuses) {
-            if (bonus.getAmount().compareTo(spendAmount) >= 0) {
+            if (bonus.getAmount().compareTo(spendAmount) > 0) {
                 bonus.spend(spendAmount);
                 bonusRepository.save(bonus);
+                BonusDetail bonusDetail = new BonusDetail();
+                bonusDetail.setBonusId(bonus.getId());
+                bonusDetail.setOrderId(bonusDto.getOrderId());
+                bonusDetail.setAmount(spendAmount);
+                bonusDetails.add(bonusDetail);
+                bonusDetailRepository.saveAll(bonusDetails);
                 return;
             }
+
+            if (bonus.getAmount().compareTo(spendAmount) == 0) {
+                bonus.spend(spendAmount);
+                bonusRepository.save(bonus);
+                bonusRepository.softDeleteById(bonus.getId());
+                BonusDetail bonusDetail = new BonusDetail();
+                bonusDetail.setBonusId(bonus.getId());
+                bonusDetail.setOrderId(bonusDto.getOrderId());
+                bonusDetail.setAmount(spendAmount);
+                bonusDetails.add(bonusDetail);
+                bonusDetailRepository.saveAll(bonusDetails);
+                return;
+            }
+
+            BonusDetail bonusDetail = new BonusDetail();
+            bonusDetail.setBonusId(bonus.getId());
+            bonusDetail.setOrderId(bonusDto.getOrderId());
+            bonusDetail.setAmount(bonus.getAmount());
+            bonusDetails.add(bonusDetail);
             spendAmount = spendAmount.subtract(bonus.getAmount());
-            bonusRepository.delete(bonus);
+            bonus.spend(bonus.getAmount());
+            bonusRepository.save(bonus);
+            bonusRepository.softDeleteById(bonus.getId());
+
         }
+        bonusDetailRepository.saveAll(bonusDetails);
     }
 
 
 
+
     @Override
-    @Scheduled(cron = "${scheduler.deleteExpiredBonuses}")//это не здесь потому что потом не найдешь отдельный конфиг класс
-    public void deleteExpiredBonuses() throws Exception {
-        LocalDate now = LocalDate.now();
-        try {
-            bonusRepository.deleteByExpireDateBefore(now);//не переменная величина
-        } catch (Exception e) {
-            throw new Exception("Error deleting expired bonuses", e);
+    public void checkDeleteEnable(){
+        if (bonusRepository.checkDeleteEnabled()) {
+            return;
         }
+        bonusRepository.updateDeleteEnabledToTrue();
+        deleteExpiredBonuses();
     }
 
     @Override
-    public void addBonus(Long clientId, BigDecimal bonusAmount) throws Exception {
+    @Transactional
+    public void deleteExpiredBonuses(){
+            bonusRepository.updateIsDeletedByExpireDateBefore(LocalDate.now());
+            bonusRepository.updateDeleteEnabledToFalse();
+    }
+
+
+    @Override
+    public void addBonus(BonusDto bonusDto) throws ResourceNotFoundException {
         LocalDate expireDate = LocalDate.from(LocalDateTime.now().plusMonths(BONUS_EXP));
-        Bonus bonus = new Bonus(null, clientId, bonusAmount, expireDate);
+        Bonus bonus = bonusConverter.dtoToEntity(bonusDto);
         try {
             bonusRepository.save(bonus);
         } catch (Exception e) {
-            throw new Exception("Error adding bonus", e);//перехватывать обычный и кидать свой BUSSINESSCRITICALLEXAPTION //нет смысла использовать чекед исключение
+            throw new ResourceNotFoundException("Error adding bonus"+ e.getMessage());
         }
     }
 }
+
+
 //подумать над восстановлением бонусов если покупка отменилась как реализовать

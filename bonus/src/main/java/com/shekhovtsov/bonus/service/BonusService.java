@@ -1,20 +1,16 @@
 package com.shekhovtsov.bonus.service;
 
 import com.shekhovtsov.bonus.dto.BonusDto;
-import org.springframework.scheduling.annotation.Scheduled;
-
-import java.math.BigDecimal;
-import java.util.List;
+import com.shekhovtsov.bonus.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BonusService {
-    List<BonusDto> getBonusesByClientId(Long clientId);
+    Page<BonusDto> getBonusesByClientId(Long clientId, Pageable pageable);
+    void spendBonuses(BonusDto bonusDto);
 
-    BigDecimal getTotalBonusesByClientId(Long clientId);
+    void checkDeleteEnable();
 
-    void spendBonuses(Long clientId, BigDecimal amount);
-
-    @Scheduled(cron = "0 0 0 * * *") // Каждый день в полночь
     void deleteExpiredBonuses() throws Exception;
-
-    void addBonus(Long clientId, BigDecimal bonusAmount) throws Exception;
+    void addBonus(BonusDto bonusDto) throws ResourceNotFoundException;
 }

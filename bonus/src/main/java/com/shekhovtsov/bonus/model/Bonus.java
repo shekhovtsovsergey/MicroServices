@@ -8,7 +8,6 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @Table("bonuses")
@@ -26,12 +25,18 @@ public class Bonus {
     private BigDecimal amount;
     @Column("expire_date")
     private LocalDate expireDate;
+    @Column("category")
+    private int category;
+    @Column("is_deleted")
+    private boolean isDeleted;
 
-    public Bonus(Long id, Long clientId, BigDecimal amount, LocalDate expireDate) {
+    public Bonus(Long id, Long clientId, BigDecimal amount, LocalDate expireDate, int category) {
         this.id = id;
         this.clientId = clientId;
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
         this.expireDate = expireDate;
+        this.category = category;
+        this.isDeleted=false;
     }
 
     public void spend(BigDecimal spendAmount){

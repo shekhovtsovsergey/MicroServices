@@ -6,7 +6,6 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -25,6 +24,11 @@ public class BonusDto {
     private BigDecimal amount;
     @Schema(description = "Дата истечения бонуса", required = true, example = "2022-12-31")
     private LocalDate expireDate;
+    @Schema(description = "Категория товара", required = true, example = "1")
+    private int category;
+    @Schema(description = "ID заказа", example = "1")
+    private Long orderId;
+
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
