@@ -20,9 +20,8 @@ public class ProductDto {
     private String title;
     @Schema(description = "Цена продукта", required = true, example = "120.00")
     private BigDecimal price;
-    @Schema(description = "Категория продукта", required = true, example = "Еда")
-    private String categoryTitle;
-
+    @Schema(description = "Категория продукта", required = true, example = "1")
+    private Long categoryId;
     public void setPrice(BigDecimal price) {
         this.price = price.setScale(2, RoundingMode.HALF_UP);
     }

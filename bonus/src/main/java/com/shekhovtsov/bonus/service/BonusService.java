@@ -9,6 +9,8 @@ public interface BonusService {
     Page<BonusDto> getBonusesByClientId(Long clientId, Pageable pageable);
     void spendBonuses(BonusDto bonusDto);
 
+    void restoreBonuses(BonusDto bonusDto);
+
     void checkDeleteEnable();
 
     void deleteExpiredBonuses() throws Exception;

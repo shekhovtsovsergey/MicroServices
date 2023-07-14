@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,24 +23,19 @@ public class Product {
 
     @Id
     private Long id;
-
+    @NotBlank
     private String title;
-
+    @NotNull
     private BigDecimal price;
-
-//    @Embedded.Nullable
+    @NotNull
     private Long category_id;
-
     @CreatedDate
     @Column("created_at")
     private LocalDateTime createdAt;
-
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
-//    @MappedCollection(idColumn = "product_id", keyColumn = "seq")
-//    private List<Picture> pictures = new ArrayList<>();
 
 
     public Product(String title, BigDecimal price, Long category) {

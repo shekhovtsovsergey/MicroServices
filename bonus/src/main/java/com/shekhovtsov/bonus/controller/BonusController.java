@@ -84,4 +84,25 @@ public class BonusController {
     public void add(@RequestBody BonusDto bonusDto) throws Exception {
         bonusService.addBonus(bonusDto);
     }
+
+
+    @PostMapping("/restore")
+    @Operation(
+            summary = "Запрос на восстановление бонусов заказу",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Пользователь не найден",
+                            responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = Error.class))
+                    )
+            }
+    )
+    public void restore(@RequestBody BonusDto bonusDto) throws Exception {
+        bonusService.restoreBonuses(bonusDto);
+    }
+
 }

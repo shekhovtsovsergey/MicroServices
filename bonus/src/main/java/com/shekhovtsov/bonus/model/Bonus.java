@@ -43,4 +43,8 @@ public class Bonus {
         amount=amount.subtract(spendAmount);
     }
 
+    public void restore(BigDecimal refundAmount){
+        amount = amount.add(refundAmount);
+    }
+
 }

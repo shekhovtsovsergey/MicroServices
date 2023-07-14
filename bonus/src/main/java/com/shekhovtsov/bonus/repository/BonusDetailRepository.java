@@ -27,4 +27,6 @@ public interface BonusDetailRepository extends CrudRepository<BonusDetail, Long>
     @Query("SELECT * FROM bonuses WHERE client_id = :clientId ORDER BY expire_date;")
     List<Bonus> findByClientIdOrderByExpirationDate(Long clientId);
 
+    @Query("SELECT sum(amount) FROM bonuses WHERE client_id = :clientId AND is_deleted=false;")
+    BigDecimal sumAmountByClientId(@Param("clientId") Long clientId);
 }

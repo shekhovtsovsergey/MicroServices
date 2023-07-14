@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,52 +49,49 @@ public class BonusServiceImpl implements BonusService {
 
     @Override
     public void spendBonuses(BonusDto bonusDto) {
+        if (bonusRepository.sumAmountByClientId(bonusDto.getClientId()).compareTo(bonusDto.getAmount())<0){
+            return;
+        }
         List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(bonusDto.getClientId());
         BigDecimal spendAmount = bonusDto.getAmount();
         List<BonusDetail> bonusDetails = new ArrayList<>();
         for (Bonus bonus : bonuses) {
-
             if (bonus.getAmount().compareTo(spendAmount) > 0) {
                 bonus.spend(spendAmount);
                 bonusRepository.save(bonus);
-                BonusDetail bonusDetail = new BonusDetail();
-                bonusDetail.setBonusId(bonus.getId());
-                bonusDetail.setOrderId(bonusDto.getOrderId());
-                bonusDetail.setAmount(spendAmount);
-                bonusDetails.add(bonusDetail);
+                bonusDetails.add(new BonusDetail(null,bonus.getId(), bonusDto.getOrderId(), spendAmount));
                 bonusDetailRepository.saveAll(bonusDetails);
                 return;
             }
-
             if (bonus.getAmount().compareTo(spendAmount) == 0) {
                 bonus.spend(spendAmount);
                 bonusRepository.save(bonus);
                 bonusRepository.softDeleteById(bonus.getId());
-                BonusDetail bonusDetail = new BonusDetail();
-                bonusDetail.setBonusId(bonus.getId());
-                bonusDetail.setOrderId(bonusDto.getOrderId());
-                bonusDetail.setAmount(spendAmount);
-                bonusDetails.add(bonusDetail);
+                bonusDetails.add(new BonusDetail(null,bonus.getId(), bonusDto.getOrderId(), spendAmount));
                 bonusDetailRepository.saveAll(bonusDetails);
                 return;
             }
-
-            BonusDetail bonusDetail = new BonusDetail();
-            bonusDetail.setBonusId(bonus.getId());
-            bonusDetail.setOrderId(bonusDto.getOrderId());
-            bonusDetail.setAmount(bonus.getAmount());
-            bonusDetails.add(bonusDetail);
+            bonusDetails.add(new BonusDetail(null,bonus.getId(), bonusDto.getOrderId(), bonus.getAmount()));
             spendAmount = spendAmount.subtract(bonus.getAmount());
             bonus.spend(bonus.getAmount());
             bonusRepository.save(bonus);
             bonusRepository.softDeleteById(bonus.getId());
-
         }
         bonusDetailRepository.saveAll(bonusDetails);
     }
 
-
-
+    @Override
+    public void restoreBonuses(BonusDto bonusDto) {
+        List<BonusDetail> bonusDetails = bonusDetailRepository.findByOrderId(bonusDto.getOrderId());
+        for (BonusDetail bonusDetail : bonusDetails) {
+            Optional<Bonus> optionalBonus = bonusRepository.findById(bonusDetail.getBonusId());
+            if (optionalBonus.isPresent()) {
+                Bonus bonus = optionalBonus.get();
+                bonus.restore(bonusDetail.getAmount());
+                bonusRepository.save(bonus);
+            }
+        }
+    }
 
     @Override
     public void checkDeleteEnable(){
@@ -123,6 +121,3 @@ public class BonusServiceImpl implements BonusService {
         }
     }
 }
-
-
-//подумать над восстановлением бонусов если покупка отменилась как реализовать

@@ -6,6 +6,7 @@ import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,8 +18,11 @@ public interface BonusRepository extends CrudRepository<Bonus,Long> {
     @Query("UPDATE bonuses b SET b.is_deleted = true WHERE b.expire_date < :date AND (SELECT delete_enabled FROM Settings) = true")
     void updateIsDeletedByExpireDateBefore(@Param("date") LocalDate date);
 
-    @Query("SELECT * FROM bonuses WHERE client_id = :clientId ORDER BY expire_date;")
+    @Query("SELECT * FROM bonuses WHERE client_id = :clientId AND is_deleted=false ORDER BY expire_date;")
     List<Bonus> findByClientIdOrderByExpirationDate(@Param("clientId") Long clientId);
+
+    @Query("SELECT sum(amount) FROM bonuses WHERE client_id = :clientId AND is_deleted=false;")
+    BigDecimal sumAmountByClientId(@Param("clientId") Long clientId);
 
     @Query("SELECT delete_enabled FROM Settings")
     boolean checkDeleteEnabled();
