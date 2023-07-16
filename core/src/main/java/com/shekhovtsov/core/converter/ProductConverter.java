@@ -23,8 +23,7 @@ public class ProductConverter {
         p.setId(productDto.getId());
         p.setTitle(productDto.getTitle());
         p.setPrice(productDto.getPrice());
-        Category c = categoryService.findByTitle(productDto.getCategoryTitle()).orElseThrow(() -> new ResourceNotFoundException("Категория не найдена"));
-        p.setCategory_id(c.getId());
+        p.setCategory_id(productDto.getCategoryId());
         return p;
     }
 }

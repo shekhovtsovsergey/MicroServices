@@ -10,7 +10,7 @@ CREATE TABLE bonuses
 
 CREATE TABLE settings
 (
-    id             SERIAL PRIMARY KEY,
+    id             SERIAL PRIMARY KEY,--KEY+строка+время жизни замка
     delete_enabled BOOLEAN DEFAULT false
 );
 

@@ -2,7 +2,6 @@ package com.shekhovtsov.bonus.service;
 
 import com.shekhovtsov.bonus.converter.BonusConverter;
 import com.shekhovtsov.bonus.dto.BonusDto;
-import com.shekhovtsov.bonus.exception.ResourceNotFoundException;
 import com.shekhovtsov.bonus.model.Bonus;
 import com.shekhovtsov.bonus.model.BonusDetail;
 import com.shekhovtsov.bonus.repository.BonusDetailRepository;
@@ -50,9 +49,9 @@ public class BonusServiceImpl implements BonusService {
     @Override
     public void spendBonuses(BonusDto bonusDto) {
         if (bonusRepository.sumAmountByClientId(bonusDto.getClientId()).compareTo(bonusDto.getAmount())<0){
-            return;
+            return;//бросить новый эксепшн 400
         }
-        List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(bonusDto.getClientId());
+        List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(bonusDto.getClientId());//сделать проверку что в загловке клиентИД равен тому кторый в дто
         BigDecimal spendAmount = bonusDto.getAmount();
         List<BonusDetail> bonusDetails = new ArrayList<>();
         for (Bonus bonus : bonuses) {
@@ -80,6 +79,37 @@ public class BonusServiceImpl implements BonusService {
         bonusDetailRepository.saveAll(bonusDetails);
     }
 
+
+    @Override
+    @Transactional
+    public void spendBonusesNew(BonusDto bonusDto) {
+        if (bonusRepository.sumAmountByClientId(bonusDto.getClientId()).compareTo(bonusDto.getAmount())<0){
+            return;//бросить новый эксепшн 400
+        }
+        List<Bonus> bonuses = bonusRepository.findByClientIdOrderByExpirationDate(bonusDto.getClientId());//сделать проверку что в загловке клиентИД равен тому кторый в дто
+        BigDecimal spendAmount = bonusDto.getAmount();
+        List<BonusDetail> bonusDetails = new ArrayList<>();
+        for (Bonus bonus : bonuses) {
+            if (bonus.getAmount().compareTo(spendAmount) > 0) {
+                bonus.spend(spendAmount);
+                bonusRepository.save(bonus);
+                bonusDetails.add(new BonusDetail(null,bonus.getId(), bonusDto.getOrderId(), spendAmount));
+                break;
+            }
+            bonusDetails.add(new BonusDetail(null,bonus.getId(), bonusDto.getOrderId(), bonus.getAmount()));
+            spendAmount = spendAmount.subtract(bonus.getAmount());
+            bonusRepository.zeroAndSoftDelete(bonus.getId());
+            if (spendAmount.equals(BigDecimal.ZERO)){
+                break;
+            }
+        }
+        bonusDetailRepository.saveAll(bonusDetails);
+    }
+
+//исправить и кинуть
+
+
+
     @Override
     public void restoreBonuses(BonusDto bonusDto) {
         List<BonusDetail> bonusDetails = bonusDetailRepository.findByOrderId(bonusDto.getOrderId());
@@ -92,10 +122,12 @@ public class BonusServiceImpl implements BonusService {
             }
         }
     }
+//тут недоделал по двум таблицам
+
 
     @Override
     public void checkDeleteEnable(){
-        if (bonusRepository.checkDeleteEnabled()) {
+        if (bonusRepository.checkDeleteEnabled()) {//проверять старый замок
             return;
         }
         bonusRepository.updateDeleteEnabledToTrue();
@@ -108,16 +140,13 @@ public class BonusServiceImpl implements BonusService {
             bonusRepository.updateIsDeletedByExpireDateBefore(LocalDate.now());
             bonusRepository.updateDeleteEnabledToFalse();
     }
+    //вынести логику захвата и осовбождения в отдельный класс
 
 
     @Override
-    public void addBonus(BonusDto bonusDto) throws ResourceNotFoundException {
+    public void addBonus(BonusDto bonusDto) {
         LocalDate expireDate = LocalDate.from(LocalDateTime.now().plusMonths(BONUS_EXP));
         Bonus bonus = bonusConverter.dtoToEntity(bonusDto);
-        try {
-            bonusRepository.save(bonus);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Error adding bonus"+ e.getMessage());
-        }
+        bonusRepository.save(bonus);
     }
 }

@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService{
         if (searchDto.getPage() < 1) {
             searchDto.setPage(1);
         }
-        BigDecimal minPrice = searchDto.getMinPrice();
+        BigDecimal minPrice = searchDto.getMinPrice();//сразу в метод
         BigDecimal maxPrice = searchDto.getMaxPrice();
 
         List<Product> products = productRepository.findByPriceBetween(minPrice,maxPrice);
@@ -43,9 +43,9 @@ public class ProductServiceImpl implements ProductService{
                 .map(productConverter::entityToDto)
                 .collect(Collectors.toList());
         PageDto<ProductDto> out = new PageDto<>();
-        out.setPage(1);
+        out.setPage(1);//доделать
         out.setItems(productDtos);
-        out.setTotalPages(1);
+        out.setTotalPages(1);//доделать
         return out;
     }
 

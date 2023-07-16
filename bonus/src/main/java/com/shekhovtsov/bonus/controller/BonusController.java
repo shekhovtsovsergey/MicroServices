@@ -40,9 +40,8 @@ public class BonusController {
                     )
             }
     )
-    public Page<BonusDto> getByClientId(@RequestHeader Long clientId, Pageable pageable) {
-        Page<BonusDto> bonuses = bonusService.getBonusesByClientId(clientId, pageable);
-        return bonuses;
+    public Page<BonusDto> getByClientId(@RequestHeader Long clientId, Pageable pageable) {//что передавать фронт будет в паджебле
+        return bonusService.getBonusesByClientId(clientId, pageable);
     }
 
 
@@ -62,7 +61,7 @@ public class BonusController {
             }
     )
     public void spend(@RequestBody BonusDto bonusDto) {
-        bonusService.spendBonuses(bonusDto);
+        bonusService.spendBonusesNew(bonusDto);
     }
 
 
@@ -81,10 +80,11 @@ public class BonusController {
                     )
             }
     )
-    public void add(@RequestBody BonusDto bonusDto) throws Exception {
+    public void add(@RequestBody BonusDto bonusDto) {
         bonusService.addBonus(bonusDto);
     }
-
+//клиент ид надо брать их заголовка во всех методах
+//множественное число
 
     @PostMapping("/restore")
     @Operation(
@@ -101,7 +101,7 @@ public class BonusController {
                     )
             }
     )
-    public void restore(@RequestBody BonusDto bonusDto) throws Exception {
+    public void restore(@RequestBody BonusDto bonusDto) {
         bonusService.restoreBonuses(bonusDto);
     }
 

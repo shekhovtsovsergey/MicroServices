@@ -15,7 +15,7 @@ public interface BonusRepository extends CrudRepository<Bonus,Long> {
     List<Bonus> findByClientId(Long clientId);
 
     @Modifying
-    @Query("UPDATE bonuses b SET b.is_deleted = true WHERE b.expire_date < :date AND (SELECT delete_enabled FROM Settings) = true")
+    @Query("UPDATE bonuses b SET b.is_deleted = true WHERE b.expire_date < :date;")
     void updateIsDeletedByExpireDateBefore(@Param("date") LocalDate date);
 
     @Query("SELECT * FROM bonuses WHERE client_id = :clientId AND is_deleted=false ORDER BY expire_date;")
@@ -38,4 +38,11 @@ public interface BonusRepository extends CrudRepository<Bonus,Long> {
     @Modifying
     @Query("UPDATE bonuses SET is_deleted = true WHERE id = :id")
     void softDeleteById(@Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE bonuses SET amount = 0, is_deleted = true WHERE id = :id")
+    void zeroAndSoftDelete(@Param("id") Long id);
+
+
+
 }

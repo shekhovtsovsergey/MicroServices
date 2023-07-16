@@ -16,15 +16,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Schema(description = "Модель бонуса")
 public class BonusDto {
-    @Schema(description = "ID бонуса", required = true, example = "1")
+    @Schema(description = "ID бонуса", required = false, example = "1")
     private Long id;
     @Schema(description = "ID клиента", required = true, example = "1")
     private Long clientId;
     @Schema(description = "Сумма бонуса", required = true, example = "50.00")
     private BigDecimal amount;
-    @Schema(description = "Дата истечения бонуса", required = true, example = "2022-12-31")
+    @Schema(description = "Дата истечения бонуса", required = false, example = "2022-12-31")
     private LocalDate expireDate;
-    @Schema(description = "Категория товара", required = true, example = "1")
+    @Schema(description = "Категория товара", required = false, example = "1")
     private int category;
     @Schema(description = "ID заказа", example = "1")
     private Long orderId;

@@ -3,7 +3,6 @@ package com.shekhovtsov.bonus.dto;
 
 import lombok.*;
 
-
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -12,9 +11,9 @@ import lombok.*;
 public class ErrorDto {
     private Long timestamp;
     private String message;
-    private int code;
+    private String code;
 
-    public ErrorDto(String message, int code) {
+    public ErrorDto(String message, String code) {
         this.message = message;
         this.code = code;
         this.timestamp= System.currentTimeMillis();

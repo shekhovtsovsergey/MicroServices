@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Модель поиска")
-public class SearchDto {
+public class SearchDto {//добавить продукт
     @Schema(description = "Минимальная цена", example = "10.00")
     private BigDecimal minPrice= BigDecimal.valueOf(0.00);
     @Schema(description = "Максимальная цена", example = "100.00")
