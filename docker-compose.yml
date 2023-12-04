@@ -1,29 +1,5 @@
 version: '3'
 services:
-
-  config:
-    build:
-      context: ./config
-      dockerfile: Dockerfile
-    domainname: config
-    container_name: config
-    ports:
-      - "8888:8888"
-    restart: always
-    networks:
-      - some-net
-
-  eureka:
-    build:
-      context: ./eureka
-      dockerfile: Dockerfile
-    container_name: eureka
-    ports:
-      - "8761:8761"
-    restart: always
-    networks:
-      - some-net
-
   core:
     build:
       context: ./core
@@ -36,9 +12,7 @@ services:
     networks:
       - some-net
     depends_on:
-      - config
-      - eureka
-
+      - postgres
   gateway:
     build:
       context: ./gateway
@@ -50,9 +24,7 @@ services:
     networks:
       - some-net
     depends_on:
-      - config
-      - eureka
-
+      - postgres
   front:
     build:
       context: ./front
@@ -64,9 +36,7 @@ services:
     networks:
       - some-net
     depends_on:
-      - config
-      - eureka
-
+      - postgres
   security:
     build:
       context: ./security
@@ -78,9 +48,7 @@ services:
     networks:
       - some-net
     depends_on:
-      - config
-      - eureka
-
+      - postgres
   storage-app:
     build:
       context: ./storage-app
@@ -94,8 +62,7 @@ services:
     networks:
       - some-net
     depends_on:
-      - config
-      - eureka
+      - postgres
   cart:
     build:
       context: ./cart
@@ -107,8 +74,7 @@ services:
     networks:
       - some-net
     depends_on:
-      - config
-      - eureka
+      - postgres
   redis:
     image: 'bitnami/redis:latest'
     container_name: redis
@@ -118,6 +84,27 @@ services:
       - "6379:6379"
     networks:
       - some-net
-
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgres
+    environment:
+      POSTGRES_DB: some_db
+      POSTGRES_USER: some_user
+      POSTGRES_PASSWORD: some_password
+    ports:
+      - "5433:5432"
+    networks:
+      - some-net
+  postgres-bonus:
+    image: 'postgres:latest'
+    container_name: postgres-bonus
+    environment:
+      POSTGRES_DB: some_db
+      POSTGRES_USER: some_user
+      POSTGRES_PASSWORD: some_password
+    ports:
+      - "5434:5432"
+    networks:
+      - some-net
 networks:
   some-net:

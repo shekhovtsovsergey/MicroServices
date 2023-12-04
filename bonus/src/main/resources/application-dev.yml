@@ -1,0 +1,38 @@
+server:
+  port: 8193
+  servlet:
+    context-path: /bonus
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/some_db
+    username: some_user
+    password: some_password
+integrations:
+  cart-service:
+    web-client:
+      name: cart
+      url: http://cart:8190/cart/
+      connect-timeout: 5000
+      read-timeout: 10000
+      write-timeout: 5000
+  storage-app:
+    web-client:
+      name: store
+      url: http://gateway:5555/store/
+      connect-timeout: 5000
+      read-timeout: 10000
+      write-timeout: 5000
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          reactive:
+            function:
+              client:
+                ExchangeFunctions: DEBUG
+  file:
+    name: /var/log/bonus.log
+scheduler:
+  deleteExpiredBonuses: "0 0 0 * * *" # Каждый день в полночь

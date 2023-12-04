@@ -1,0 +1,57 @@
+server:
+  port: 5555
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+            allowedHeaders: "*"
+      routes:
+        - id: core
+          uri: http://core:8189
+#          uri: lb://CORE
+          predicates:
+            - Path=/core/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/core
+            - JwtAuthFilter
+        - id: cart
+          uri: http://cart:8190
+#          uri: lb://CART
+          predicates:
+            - Path=/cart/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/cart
+            - JwtAuthFilter
+        - id: security
+          uri: http://security:8188
+#          uri: lb://SECURITY
+          predicates:
+            - Path=/security/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/security
+            - JwtAuthFilter
+        - id: store
+          uri: http://storage-app:8191
+#          uri: lb://STORAGE-APP
+          predicates:
+            - Path=/store/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/store
+            - JwtAuthFilter
+
+jwt:
+  secret: secretKey
