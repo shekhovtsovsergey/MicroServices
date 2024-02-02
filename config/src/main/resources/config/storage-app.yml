@@ -9,7 +9,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka:8761/eureka
+#      defaultZone: http://eureka:8761/eureka
+      defaultZone: http://myapp-service-8761.default.svc.cluster.local:8761/eureka
 APP_RESOURCES_PATH: /app/resources
 APP_STORAGE_PATH: app/storage
 storage:

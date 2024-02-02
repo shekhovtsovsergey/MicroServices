@@ -53,7 +53,7 @@
         }
 
         if (!$localStorage.winterMarketGuestCartId) {
-            $http.get('http://localhost:5555/cart/api/v1/cart/generate_uuid')
+            $http.get('http://myapp-service-5555.default.svc.cluster.local:5555/cart/api/v1/cart/generate_uuid')
                 .then(function successCallback(response) {
                     $localStorage.winterMarketGuestCartId = response.data.value;
                 });
@@ -63,7 +63,7 @@
 
 angular.module('market').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:5555/security/auth', $scope.user)
+        $http.post('http://myapp-service-5555.default.svc.cluster.local:5555/security/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;

@@ -1,6 +1,8 @@
 angular.module('market').controller('cartController', function ($scope, $http, $location, $localStorage) {
-    const contextPath = 'http://localhost:5555/cart/';
-    const coreContextPath = 'http://localhost:5555/core/';
+    // const contextPath = 'http://localhost:5555/cart/';
+    const contextPath = 'http://myapp-service-5555.default.svc.cluster.local:5555/cart/';
+    // const coreContextPath = 'http://localhost:5555/core/';
+    const coreContextPath = 'http://myapp-service-5555.default.svc.cluster.local:5555/core/';
 
     $scope.loadCart = function () {
         $http.get(contextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId).then(function (response) {

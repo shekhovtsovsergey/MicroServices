@@ -1,0 +1,180 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8888
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8888
+  template:
+    metadata:
+      labels:
+        app: myapp-8888
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/config
+          ports:
+            - containerPort: 8888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8761
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8761
+  template:
+    metadata:
+      labels:
+        app: myapp-8761
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/eureka
+          ports:
+            - containerPort: 8761
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8189
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8189
+  template:
+    metadata:
+      labels:
+        app: myapp-8189
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/coree
+
+          ports:
+            - containerPort: 8189
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-5555
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-5555
+  template:
+    metadata:
+      labels:
+        app: myapp-5555
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/gatewayy
+          ports:
+            - containerPort: 5555
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-3000
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-3000
+  template:
+    metadata:
+      labels:
+        app: myapp-3000
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/front
+          ports:
+            - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8188
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8188
+  template:
+    metadata:
+      labels:
+        app: myapp-8188
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/security
+          ports:
+            - containerPort: 8188
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8191
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8191
+  template:
+    metadata:
+      labels:
+        app: myapp-8191
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/storage-app
+          ports:
+            - containerPort: 8191
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8190
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8190
+  template:
+    metadata:
+      labels:
+        app: myapp-8190
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/cart
+          ports:
+            - containerPort: 8190
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-6379
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-6379
+  template:
+    metadata:
+      labels:
+        app: myapp-6379
+    spec:
+      containers:
+        - name: myapp-container
+          image: 'bitnami/redis:latest'
+          ports:
+            - containerPort: 6379

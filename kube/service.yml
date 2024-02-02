@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8888
+spec:
+  selector:
+    app: myapp-8888
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8761
+spec:
+  selector:
+    app: myapp-8761
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8189
+spec:
+  selector:
+    app: myapp-8189
+  ports:
+    - protocol: TCP
+      port: 8189
+      targetPort: 8189
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-5555
+spec:
+  selector:
+    app: myapp-5555
+  ports:
+    - protocol: TCP
+      port: 5555
+      targetPort: 5555
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-3000
+spec:
+  selector:
+    app: myapp-3000
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8188
+spec:
+  selector:
+    app: myapp-8188
+  ports:
+    - protocol: TCP
+      port: 8188
+      targetPort: 8188
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8191
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 8191
+      targetPort: 8191
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8190
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 8190
+      targetPort: 8190
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-6379
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
