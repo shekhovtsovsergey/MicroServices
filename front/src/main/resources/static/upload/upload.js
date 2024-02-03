@@ -1,5 +1,5 @@
 angular.module('market').controller('uploadController', function ($scope, $http, $location, $localStorage) {
-    const contextPath = 'http://myapp-service-5555.default.svc.cluster.local:5555/core/';
+    const contextPath = 'http://arch.homework/core/';
     $scope.saveNewProduct = function () {
         // Получаем значения полей из формы
         const title = document.getElementById("productTitleInput").value;

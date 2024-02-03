@@ -1,6 +1,6 @@
 angular.module('market').controller('storeController', function ($scope, $http, $location, $localStorage) {
-    const contextPath = 'http://myapp-service-5555.default.svc.cluster.local:5555/core/';
-    const cartContextPath = 'http://myapp-service-5555.default.svc.cluster.local:5555/cart/';
+    const contextPath = 'http://arch.homework/core/';
+    const cartContextPath = 'http://arch.homework/cart/';
     $scope.loadProducts = function (pageIndex = 1) {
         $http({
             url: contextPath + 'api/v1/products',

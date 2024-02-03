@@ -1,5 +1,5 @@
 angular.module('market').controller('registrationController', function ($scope, $http, $location, $localStorage) {
-    const contextPath = 'http://myapp-service-5555.default.svc.cluster.local:5555/security/';
+    const contextPath = 'http://arch.homework/security/';
 
     $scope.functionRegistration = function () {
         $http.post(contextPath + 'registration', $scope.reguser).then(function (response) {
