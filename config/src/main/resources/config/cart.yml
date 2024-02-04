@@ -15,9 +15,10 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-#      defaultZone: http://eureka:8761/eureka
       defaultZone: http://myapp-service-8761.default.svc.cluster.local:8761/eureka
 spring:
   redis:
     host: myapp-service-6379.default.svc.cluster.local
     port: 6379
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes

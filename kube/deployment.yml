@@ -155,7 +155,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/cart
+          image: 89629417575/cartt
           ports:
             - containerPort: 8190
 ---
@@ -176,5 +176,8 @@ spec:
       containers:
         - name: myapp-container
           image: 'bitnami/redis:latest'
+          env: # Используем поле env для передачи переменных среды
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
           ports:
             - containerPort: 6379
