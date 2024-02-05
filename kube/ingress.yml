@@ -55,6 +55,24 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: myapp-ingress-8190
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: /cart
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp-service-8190
+                port:
+                  number: 8190
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
   name: myapp-ingress-5555
 spec:
   ingressClassName: nginx
@@ -123,24 +141,6 @@ spec:
                 name: myapp-service-8191
                 port:
                   number: 8191
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-ingress-8190
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /cart
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-8190
-                port:
-                  number: 8190
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

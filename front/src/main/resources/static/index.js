@@ -53,7 +53,7 @@
         }
 
         if (!$localStorage.winterMarketGuestCartId) {
-            $http.get('http://arch.homework/cart/api/v1/cart/generate_uuid')
+            $http.get('http://arch.homework/cart/api/v1/cart/uuid')
                 .then(function successCallback(response) {
                     $localStorage.winterMarketGuestCartId = response.data.value;
                 });

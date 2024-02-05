@@ -155,7 +155,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/cartt
+          image: 89629417575/cart7
           ports:
             - containerPort: 8190
 ---

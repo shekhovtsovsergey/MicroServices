@@ -88,7 +88,7 @@ metadata:
   name: myapp-service-8190
 spec:
   selector:
-    app: myapp
+    app: myapp-8190
   ports:
     - protocol: TCP
       port: 8190
