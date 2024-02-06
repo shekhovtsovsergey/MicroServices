@@ -17,8 +17,9 @@ eureka:
     service-url:
       defaultZone: http://myapp-service-8761.default.svc.cluster.local:8761/eureka
 spring:
-  redis-stack:
-    host: http://myapp-service-6379.default.svc.cluster.local/redis-stack
+  redis:
+    host: http://myapp-service-6379.default.svc.cluster.local:6379
     port: 6379
-    environment:
-      ALLOW_EMPTY_PASSWORD: yes
+
+logging.level.org.springframework.web: TRACE
+logging.level.org.springframework.data.redis: TRACE

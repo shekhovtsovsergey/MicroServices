@@ -100,7 +100,7 @@ metadata:
   name: myapp-service-6379
 spec:
   selector:
-    app: myapp
+    app: myapp-6379
   ports:
     - protocol: TCP
       port: 6379
