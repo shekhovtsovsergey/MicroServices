@@ -1,78 +1,6 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: myapp-ingress-8888
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /config
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-8888
-                port:
-                  number: 8888
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-ingress-8761
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /eureka
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-8761
-                port:
-                  number: 8761
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-ingress-8189
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /core
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-8189
-                port:
-                  number: 8189
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-ingress-8190
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /cart
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-8190
-                port:
-                  number: 8190
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: myapp-ingress-5555
 spec:
   ingressClassName: nginx
@@ -87,24 +15,6 @@ spec:
                 name: myapp-service-5555
                 port:
                   number: 5555
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-ingress-3000
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /front
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-3000
-                port:
-                  number: 3000
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -127,35 +37,144 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: myapp-ingress-8191
+  name: myapp-ingress-3000
 spec:
   ingressClassName: nginx
   rules:
     - host: arch.homework
       http:
         paths:
-          - path: /storage-app
+          - path: /front
             pathType: Prefix
             backend:
               service:
-                name: myapp-service-8191
+                name: myapp-service-3000
                 port:
-                  number: 8191
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-ingress-6379
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: arch.homework
-      http:
-        paths:
-          - path: /redis
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-service-6379
-                port:
-                  number: 6379
+                  number: 3000
+
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-8888
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /config
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-8888
+#                port:
+#                  number: 8888
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-8761
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /eureka
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-8761
+#                port:
+#                  number: 8761
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-8189
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /core
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-8189
+#                port:
+#                  number: 8189
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-8190
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /cart
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-8190
+#                port:
+#                  number: 8190
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-8188
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /security
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-8188
+#                port:
+#                  number: 8188
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-8191
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /storage-app
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-8191
+#                port:
+#                  number: 8191
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myapp-ingress-6379
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: arch.homework
+#      http:
+#        paths:
+#          - path: /redis
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: myapp-service-6379
+#                port:
+#                  number: 6379

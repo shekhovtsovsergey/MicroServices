@@ -33,31 +33,38 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     }
     @Override
     public GatewayFilter apply(Config config) {
-        System.out.println("точка 1");
+        System.out.println("point 0 - went into the method apply");
         return (exchange, chain) -> {
-            System.out.println("точка 2");
+            System.out.println("point 1 - started executing lambda");
             ServerHttpRequest request = exchange.getRequest();
+
             if (request.getHeaders().containsKey("username")) {
-                System.out.println("точка 3");
+                System.out.println("point 2 - Invalid header username");
                 return this.onError(exchange, "Invalid header username", HttpStatus.BAD_REQUEST);
             }
-            if (isAuthMissing(request)) {
-                final String token = getAuthHeader(request);
-                if (jwtUtil.isInvalid(token)) {
-                    System.out.println("точка 4");
-                    return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
-                }
-                System.out.println("точка 5");
-                System.out.println("место модификации заголовка" + exchange + token);
-                populateRequestWithHeaders(exchange, token);
+            if (!request.getHeaders().containsKey("Authorization")) {
+                System.out.println("point 3 - there is no token in the header");
+                return this.onError(exchange, "there is no token in the header", HttpStatus.BAD_REQUEST);
             }
-            System.out.println("точка 6");
+            if (!request.getHeaders().getOrEmpty("Authorization").get(0).startsWith("Bearer ")) {
+                System.out.println("point 4 - token doesn't start with Bearer");
+                return this.onError(exchange, "token doesn't start with Bearer", HttpStatus.BAD_REQUEST);
+            }
+            final String token = getAuthHeader(request);
+            if (jwtUtil.isInvalid(token)) {
+               System.out.println("point 4 - token has expired");
+               return this.onError(exchange, "token has expired", HttpStatus.UNAUTHORIZED);
+            }
+            System.out.println("point 5 - all checks passed");
+            System.out.println("header modification location" + exchange + token);
+            populateRequestWithHeaders(exchange, token);
+            System.out.println("point 6 - header is ok");
             return chain.filter(exchange);
         };
     }
     @Override
     public GatewayFilter apply(String routeId, Config config) {
-        System.out.println("точка 7");
+        System.out.println("point 7 - other apply");
         return super.apply(routeId, config);
     }
     @Override
@@ -90,6 +97,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     }
     public static class Config {
     }
+
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
@@ -98,22 +106,15 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     private String getAuthHeader(ServerHttpRequest request) {
         return request.getHeaders().getOrEmpty("Authorization").get(0).substring(7);
     }
-    private boolean isAuthMissing(ServerHttpRequest request) {
-        if (!request.getHeaders().containsKey("Authorization")) {
-            return true;
-        }
-        if (!request.getHeaders().getOrEmpty("Authorization").get(0).startsWith("Bearer ")) {
-            return true;
-        }
-        return false;
-    }
+
+
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         Claims claims = jwtUtil.getAllClaimsFromToken(token);
-        System.out.println("точка 8");
+        System.out.println("point 8 - method populateRequestWithHeaders");
         exchange.getRequest().mutate()
                 .header("username", claims.getSubject())
 //                .header("role", String.valueOf(claims.get("role")))
                 .build();
-        System.out.println("контроль заголовка" + exchange.getRequest().getHeaders());
+        System.out.println("point 9 - header: " + exchange.getRequest().getHeaders());
     }
 }
