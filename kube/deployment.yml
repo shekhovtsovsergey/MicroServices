@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/congigg
+          image: 89629417575/config20
           ports:
             - containerPort: 8888
 ---
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/eureka
+          image: 89629417575/eureka20
           ports:
             - containerPort: 8761
 ---
@@ -54,8 +54,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/coree
-
+          image: 89629417575/core20
           ports:
             - containerPort: 8189
 ---
@@ -75,7 +74,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/gatewayy
+          image: 89629417575/gateway20
           ports:
             - containerPort: 5555
 ---
@@ -95,7 +94,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/front
+          image: 89629417575/front20
           ports:
             - containerPort: 3000
 ---
@@ -115,7 +114,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/security
+          image: 89629417575/security20
           ports:
             - containerPort: 8188
 ---
@@ -135,7 +134,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/storage-app
+          image: 89629417575/storage-app20
           ports:
             - containerPort: 8191
 ---
@@ -155,7 +154,7 @@ spec:
     spec:
       containers:
         - name: myapp-container
-          image: 89629417575/cart7
+          image: 89629417575/cart20
           ports:
             - containerPort: 8190
 ---

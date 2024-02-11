@@ -15,6 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,9 +62,17 @@ public class OrderController {
     )
     @GetMapping("/api/v1/orders")
     public List<OrderDto> getUserOrders(
-            @Parameter(description = "Имя текущего пользователя", required = true)
-            @RequestHeader String username
+            @Parameter(description = "Имя текущего пользователя", required = false)
+            @RequestHeader String username,
+            HttpServletRequest request
     ) {
+        // Log the incoming request with headers
+        System.out.println("Incoming Request: " + request.getMethod() + " " + request.getRequestURI());
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + ": " + request.getHeader(headerName));
+        }
         return orderService.findByUsername(username).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 }
