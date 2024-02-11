@@ -5,7 +5,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     const coreContextPath = 'http://arch.homework/core/';
 
     $scope.loadCart = function () {
-        $http.get(contextPath + 'api/v1/cart/uuid/' + $localStorage.winterMarketGuestCartId).then(function (response) {
+        $http.get(contextPath + 'api/v1/cart/' + $localStorage.winterMarketGuestCartId).then(function (response) {
             $scope.cart = response.data;
         });
     }
