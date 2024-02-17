@@ -26,6 +26,6 @@
         <appender-ref ref="logstash"/>
     </root>
 
-    <logger name="org.springframework" level="TRACE"/>
-    <logger name="com" level="TRACE"/>
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="com" level="DEBUG"/>
 </configuration>
