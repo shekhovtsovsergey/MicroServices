@@ -1,0 +1,118 @@
+### Elasticsearch Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: elasticsearch:7.16.2
+          ports:
+            - containerPort: 9200
+              name: http
+            - containerPort: 9300
+              name: transport
+          volumeMounts:
+            - name: elastic-data
+              mountPath: /usr/share/elasticsearch/data
+          env:
+            - name: ES_JAVA_OPTS
+              value: "-Xmx256m -Xms256m"
+            - name: discovery.type
+              value: single-node
+      volumes:
+        - name: elastic-data
+          emptyDir: {}
+
+### Elasticsearch Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-service
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9200
+      targetPort: 9200
+    - name: transport
+      protocol: TCP
+      port: 9300
+      targetPort: 9300
+
+
+### Kibana Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: kibana:7.16.2
+          ports:
+            - containerPort: 5601
+              name: http
+          env:
+            - name: ELASTICSEARCH_URL
+              value: "elasticsearch-service.default.svc.cluster.local:9200"
+      volumes:
+        - name: kibana-data
+          emptyDir: {}
+
+
+### Kibana Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana-service
+spec:
+  selector:
+    app: kibana
+  ports:
+    - protocol: TCP
+      port: 5601
+      targetPort: 5601
+
+### Kibana Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kibana-ingress
+spec:
+  rules:
+    - host: elastic.arch.homework
+      http:
+        paths:
+          - backend:
+              service:
+                name: kibana-service
+                port:
+                  number: 5601
+            pathType: Prefix
+            path: /
