@@ -76,7 +76,7 @@ metadata:
   name: myapp-service-8191
 spec:
   selector:
-    app: myapp
+    app: myapp-8191
   ports:
     - protocol: TCP
       port: 8191

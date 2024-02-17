@@ -51,7 +51,24 @@ spec:
                 name: myapp-service-3000
                 port:
                   number: 3000
-
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress-8191
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: store.arch.homework
+      http:
+        paths:
+          - path: /store
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp-service-8191
+                port:
+                  number: 8191
 #---
 #apiVersion: networking.k8s.io/v1
 #kind: Ingress
@@ -150,10 +167,10 @@ spec:
 #spec:
 #  ingressClassName: nginx
 #  rules:
-#    - host: arch.homework
+#    - host: store.arch.homework
 #      http:
 #        paths:
-#          - path: /storage-app
+#          - path: /store
 #            pathType: Prefix
 #            backend:
 #              service:

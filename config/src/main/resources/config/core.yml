@@ -23,18 +23,15 @@ eureka:
       register-with-eureka: true
       fetch-registry: true
       service-url:
-#        defaultZone: http://eureka:8761/eureka
         defaultZone: http://myapp-service-8761.default.svc.cluster.local:8761/eureka
 integrations:
   cart-service:
-#    url: http://cart:8190/cart/
     url: http://myapp-service-8190.default.svc.cluster.local:8190/cart/
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
   storage-app:
-#    url: http://gateway:5555/store/
-    url: http://myapp-service-5555.default.svc.cluster.local:5555/store/
+    url: http://myapp-service-8191.default.svc.cluster.local:8191/store/
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
