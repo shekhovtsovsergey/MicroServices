@@ -1,5 +1,6 @@
 package com.example.core.config;
 
+import com.example.core.property.BookingServiceIntegrationProperties;
 import com.example.core.property.CartServiceIntegrationProperties;
 import com.example.core.property.PictureServiceIntegrationProperties;
 import io.netty.channel.ChannelOption;
@@ -20,7 +21,8 @@ import java.util.concurrent.TimeUnit;
 @EnableConfigurationProperties(
         {
                 CartServiceIntegrationProperties.class,
-                PictureServiceIntegrationProperties.class
+                PictureServiceIntegrationProperties.class,
+                BookingServiceIntegrationProperties.class
         }
 )
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class AppConfig {
 
     private final CartServiceIntegrationProperties cartServiceIntegrationProperties;
     private final PictureServiceIntegrationProperties pictureServiceIntegrationProperties;
+    private final BookingServiceIntegrationProperties bookingServiceIntegrationProperties;
 
 
     @Bean
@@ -63,5 +66,23 @@ public class AppConfig {
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }
+
+    @Bean
+    public WebClient bookingServiceWebClient() {
+        TcpClient tcpClient = TcpClient
+                .create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, bookingServiceIntegrationProperties.getConnectTimeout())
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(bookingServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(bookingServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
+                });
+
+        return WebClient
+                .builder()
+                .baseUrl(bookingServiceIntegrationProperties.getUrl())
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .build();
+    }
+
 
 }

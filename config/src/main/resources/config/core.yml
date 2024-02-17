@@ -35,6 +35,11 @@ integrations:
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
+  booking:
+    url: http://myapp-service-8000.default.svc.cluster.local:8000/
+    connect-timeout: 5000
+    read-timeout: 120000
+    write-timeout: 5000
 logging:
   level:
     org:
