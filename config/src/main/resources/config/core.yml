@@ -18,6 +18,12 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
+  kafka:
+    bootstrap-servers: host.minikube.internal:9092
+    producer:
+      bootstrap-servers: host.minikube.internal:9092
+      client-id: demo-producer
+
 eureka:
     client:
       register-with-eureka: true
@@ -51,3 +57,10 @@ logging:
                 ExchangeFunctions: DEBUG
   file:
     name: /var/log/core.log
+application:
+  kafka:
+    topic: demo-topic
+    bootstrap-servers: host.minikube.internal:9092
+    producer:
+      bootstrap-servers: host.minikube.internal:9092
+      client-id: demo-producer

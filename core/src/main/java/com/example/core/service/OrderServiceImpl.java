@@ -3,12 +3,14 @@ package com.example.core.service;
 import com.example.core.converter.ProductConverter;
 import com.example.core.dto.CartDto;
 import com.example.core.integration.BookingServiceIntegration;
+import com.example.core.kafka.MessageProducer;
 import com.example.core.model.Order;
 import com.example.core.model.OrderItem;
 import com.example.core.integration.CartServiceIntegration;
 import com.example.core.dao.OrderDao;
 import com.example.core.model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class OrderServiceImpl implements OrderService{
     private final CartServiceIntegration cartServiceIntegration;
     private final ProductConverter productConverter;
     private final BookingServiceIntegration bookingServiceIntegration;
+    private final MessageProducer messageProducer;
 
     @Override
     @Transactional
@@ -49,6 +52,7 @@ public class OrderServiceImpl implements OrderService{
         order.setItems(items);
 
         orderRepository.save(order);
+        messageProducer.generateAndSendMessage();
         cartServiceIntegration.clear(username);
 
         return order;
