@@ -4,7 +4,7 @@ server:
     context-path: /cart
 integrations:
   product-service:
-    url: http://core:8189/core/
+    url: http://myapp-service-8189.default.svc.cluster.local:8189/core/
     connect-timeout: 5000
     read-timeout: 10000
     write-timeout: 5000
@@ -15,8 +15,11 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka:8761/eureka
+      defaultZone: http://myapp-service-8761.default.svc.cluster.local:8761/eureka
 spring:
   redis:
-    host: redis
+    host: myapp-service-6379.default.svc.cluster.local
     port: 6379
+
+logging.level.org.springframework.web: TRACE
+logging.level.org.springframework.data.redis: TRACE

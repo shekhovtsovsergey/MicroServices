@@ -1,0 +1,131 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: grafana.arch.homework
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp-service-30000
+                port:
+                  number: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: prometheus.arch.homework
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp-service-9090
+                port:
+                  number: 9090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-30000
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-30000
+  template:
+    metadata:
+      labels:
+        app: myapp-30000
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/grafana-lesson11
+          ports:
+            - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-9090
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-9090
+  template:
+    metadata:
+      labels:
+        app: myapp-9090
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/prometheus-lesson11
+          ports:
+            - containerPort: 9090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8080
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8080
+  template:
+    metadata:
+      labels:
+        app: myapp-8080
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/core-lesson11
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-8080
+spec:
+  selector:
+    app: myapp-8080
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-30000
+spec:
+  selector:
+    app: myapp-30000
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-9090
+spec:
+  selector:
+    app: myapp-9090
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090

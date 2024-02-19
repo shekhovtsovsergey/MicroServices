@@ -60,6 +60,10 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+        </dependency>
 
     </dependencies>
 

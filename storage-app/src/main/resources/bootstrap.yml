@@ -3,7 +3,7 @@ spring:
     name: storage-app
   cloud:
     config:
-      uri: http://config:8888
+      uri: http://myapp-service-8888.default.svc.cluster.local:8888
       failFast: true
       retry:
         initialInterval: 3000
@@ -15,4 +15,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka:8761/eureka
+      defaultZone: http://myapp-service-8761.default.svc.cluster.local:8761/eureka

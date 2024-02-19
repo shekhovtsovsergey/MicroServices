@@ -1,0 +1,34 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+integrations:
+  delivery:
+    url: http://myapp-service-8081.default.svc.cluster.local:8081/delivery
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
+  ware:
+    url: http://myapp-service-8082.default.svc.cluster.local:8082/ware
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000
+  payment:
+    url: http://myapp-service-8083.default.svc.cluster.local:8083/payment
+    connect-timeout: 5000
+    read-timeout: 10000
+    write-timeout: 5000

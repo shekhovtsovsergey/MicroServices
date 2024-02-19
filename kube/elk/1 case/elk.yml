@@ -1,0 +1,186 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - protocol: TCP
+      port: 9200
+      targetPort: 9200
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: elasticsearch:7.16.2
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "100m"
+          env:
+            - name: ES_JAVA_OPTS
+              value: "-Xmx256m -Xms256m"
+            - name: discovery.type
+              value: "single-node"
+          ports:
+            - containerPort: 9200
+          volumeMounts:
+            - name: elastic-data
+              mountPath: /usr/share/elasticsearch/data/
+          volumes:
+            - name: elastic-data
+              persistentVolumeClaim:
+                claimName: elastic-data
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash
+spec:
+  selector:
+    app: logstash
+  ports:
+    - protocol: TCP
+      port: 9600
+      targetPort: 9600
+    - protocol: TCP
+      port: 5044
+      targetPort: 5044
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+        - name: logstash
+          image: logstash:7.16.2
+          volumeMounts:
+            - name: logstash-conf
+              mountPath: /usr/share/logstash/pipeline/logstash.conf
+          env:
+            - name: ELASTICSEARCH_HOST
+              value: elasticsearch
+          ports:
+            - containerPort: 9600
+            - containerPort: 5044
+      volumes:
+        - name: logstash-conf
+          hostPath:
+            path: ./logstash.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+spec:
+  selector:
+    app: kibana
+  ports:
+    - protocol: TCP
+      port: 5601
+      targetPort: 5601
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: kibana:7.16.2
+          env:
+            - name: ELASTICSEARCH_URL
+              value: http://elasticsearch:9200
+          ports:
+            - containerPort: 5601
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elastic-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+    - host: elastic.arch.homework
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kibana
+                port:
+                  number: 5601
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-internal-access
+spec:
+  podSelector:
+    matchLabels:
+      app: elasticsearch
+  ingress:
+    - from:
+        - podSelector: {}
+  policyTypes:
+    - Ingress
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elastic-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

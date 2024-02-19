@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment-8082
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-8082
+  template:
+    metadata:
+      labels:
+        app: myapp-8082
+    spec:
+      containers:
+        - name: myapp-container
+          image: 89629417575/ware32
+          ports:
+            - containerPort: 8082

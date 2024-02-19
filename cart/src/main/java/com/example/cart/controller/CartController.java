@@ -19,6 +19,7 @@ public class CartController {
 
     @GetMapping("/api/v1/cart/uuid")
     public StringResponse generateUuid() {
+        System.out.println("Request got");
         return cartService.generateUuid();
     }
 
